@@ -52,3 +52,7 @@ a:active{
     color:black;
     font-size: 0.18rem
 }
+
+.home .swiper-slide{
+    font-size: 0.12rem
+}

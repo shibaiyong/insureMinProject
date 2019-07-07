@@ -27,29 +27,27 @@ export default {
   data() {
     return {
       swiperOption: {
-        // some swiper options/callbacks
-        // 所有的参数同 swiper 官方 api 参数
-        // ...
+        autoplay: {
+          delay: 6000,
+          stopOnLastSlide: false,
+          disableOnInteraction: true,
+        },
+        direction : 'vertical',
+        speed:300
       }
     };
   },
   created() {},
   methods: {
-      callback(){
-
-      }
+    callback() {}
   },
   computed: {
     swiper() {
+      console.log("hahah");
       return this.$refs.mySwiper.swiper;
     }
   },
-  mounted() {
-    // current swiper instance
-    // 然后你就可以使用当前上下文内的swiper对象去做你想做的事了
-    console.log("this is current swiper instance object", this.swiper);
-    this.swiper.slideTo(3, 1000, false);
-  },
+  mounted() {},
   components: {
     MyHeader,
     swiper,
@@ -59,7 +57,8 @@ export default {
 };
 </script>
 <style scoped>
-    .banner{
-        height:40px;
-    }
+.banner {
+  height: 40px;
+  overflow:hidden;
+}
 </style>

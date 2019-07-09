@@ -2,9 +2,11 @@
   <mt-header :title="title">
   <router-link to="/" slot="left">
     <mt-button icon="back"></mt-button>
+
   </router-link>
   <mt-button icon="more" slot="right">{{close}}</mt-button>
 </mt-header>
+
 </template>
 
 <script>

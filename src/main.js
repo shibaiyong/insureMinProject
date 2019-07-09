@@ -5,8 +5,8 @@ import App from './App'
 import router from './router'
 import store from './vuex/store'
 import 'mint-ui/lib/style.css'
-import '@/assets/css/common.css'
 import '@/assets/utils/ajustScreen.js'
+import '@/assets/css/common.css'
 //按需引入 借助 babel-plugin-component
 import { Button, Picker, DatetimePicker, Field, Checklist, Lazyload, Loadmore, IndexList, IndexSection, Cell, Header } from 'mint-ui'
 //以下是mint-ui完整引入
@@ -14,7 +14,7 @@ import { Button, Picker, DatetimePicker, Field, Checklist, Lazyload, Loadmore, I
 //Vue.use(MintUI)
 Vue.component(Button.name, Button)
 // Vue.component(Picker.name, Picker)
-// Vue.component(DatetimePicker.name, DatetimePicker)
+Vue.component(DatetimePicker.name, DatetimePicker)
 // Vue.component(Field.name, Field)
 // Vue.component(Checklist.name, Checklist)
 // Vue.component(Loadmore.name, Loadmore)

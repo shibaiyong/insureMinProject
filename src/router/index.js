@@ -13,6 +13,12 @@ const VerticalSwiper = r => require.ensure([], () => r(require('@/components/bas
 
 
 const Home = r => require.ensure([], () => r(require('@/components/page/home/Home')), 'Home')
+const TransactionFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/TransactionFilter')), 'TransactionFilter')
+const IncomeFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeFilter')), 'IncomeFilter')
+const PersonalCenter = r => require.ensure([], () => r(require('@/components/page/personalcenter/PersonCenter')), 'PersonalCenter')
+const TransactionList = r => require.ensure([], () => r(require('@/components/page/personalcenter/TransactionList')), 'TransactionList')
+const IncomeList = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeList')), 'IncomeList')
+const WithdrawFail = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/WithdrawFail')), 'WidthdrawFail')
 
 const instance = new Router({
   mode: 'history',
@@ -27,47 +33,70 @@ const instance = new Router({
         requireAuth: true,
         roles: ['superadmin']
       }
+    },
+
+    {
+      path: '/personalcenter',
+      name: 'PersonalCenter',
+      component: PersonalCenter,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/transactionlist',
+      name: 'TransactionList',
+      component: TransactionList,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/transactionfilter',
+      name: 'TransactionFilter',
+      component: TransactionFilter,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/incomefilter',
+      name: 'IncomeFilter',
+      component: IncomeFilter,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/incomelist',
+      name: 'IncomeList',
+      component: IncomeList,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/withdrawfail',
+      name: 'WithdrawFail',
+      component: WithdrawFail,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
     }
-    // {
-    //   path: '/helloearth',
-    //   name: 'HelloEarth',
-    //   component: HelloEarth,
-    //   meta: {
-    //     title: 'HelloEarth',
-    //     requireAuth: true,
-    //     roles: ['admin', 'superadmin']
-    //   }
-    // },
-    // {
-    //   path: '/imagelazy',
-    //   name: 'ImageLazy',
-    //   component: ImageLazy,
-    //   meta: {
-    //     title: 'ImageLazy',
-    //     requireAuth: true,
-    //     roles: ['admin', 'superadmin']
-    //   }
-    // },
-    // {
-    //   path: '/updownupdate',
-    //   name: 'UpDownUpdate',
-    //   component: UpDownUpdate,
-    //   meta: {
-    //     title: 'UpDownUpdate',
-    //     requireAuth: true,
-    //     roles: ['admin', 'superadmin']
-    //   }
-    // },
-    // {
-    //   path: '/verticalswiper',
-    //   name: 'VerticalSwiper',
-    //   component: VerticalSwiper,
-    //   meta: {
-    //     title: 'VerticalSwiper',
-    //     requireAuth: true,
-    //     roles: ['admin', 'superadmin']
-    //   }
-    // }
+    
   ]
 })
 
@@ -75,9 +104,10 @@ const instance = new Router({
 instance.beforeEach((to, from, next) => {
   let _title = to.meta.title
   document.title = _title ? _title : '默认标题'
-  if (to.meta.requireAuth) {
-    next()
-  }
+  // if (to.meta.requireAuth) {
+  //   next()
+  // }
+  next()
 })
 
 export default instance

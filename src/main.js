@@ -8,7 +8,7 @@ import 'mint-ui/lib/style.css'
 import '@/assets/utils/ajustScreen.js'
 import '@/assets/css/common.css'
 //按需引入 借助 babel-plugin-component
-import { Button, Picker, DatetimePicker, Field, Checklist, Lazyload, Loadmore, IndexList, IndexSection, Cell, Header } from 'mint-ui'
+import { Button, Picker, DatetimePicker, Field, Checklist, Lazyload, Loadmore, IndexList, IndexSection, Cell, Header, Navbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui'
 //以下是mint-ui完整引入
 //import MintUI from 'mint-ui'
 //Vue.use(MintUI)
@@ -20,9 +20,13 @@ Vue.component(DatetimePicker.name, DatetimePicker)
 // Vue.component(Loadmore.name, Loadmore)
 // Vue.component(IndexList.name, IndexList)
 // Vue.component(IndexSection.name, IndexSection)
-// Vue.component(Cell.name, Cell)
+Vue.component(Cell.name, Cell)
 // Vue.use(Lazyload)
-Vue.component(Header.name, Header);
+Vue.component(Header.name, Header)
+Vue.component(Navbar.name, Navbar)
+Vue.component(TabItem.name, TabItem)
+Vue.component(TabContainer.name, TabContainer)
+Vue.component(TabContainerItem.name, TabContainerItem)
 
 
 Vue.config.productionTip = false

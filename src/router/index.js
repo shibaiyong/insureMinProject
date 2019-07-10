@@ -18,7 +18,12 @@ const IncomeFilter = r => require.ensure([], () => r(require('@/components/page/
 const PersonalCenter = r => require.ensure([], () => r(require('@/components/page/personalcenter/PersonCenter')), 'PersonalCenter')
 const TransactionList = r => require.ensure([], () => r(require('@/components/page/personalcenter/TransactionList')), 'TransactionList')
 const IncomeList = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeList')), 'IncomeList')
-const WithdrawFail = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/WithdrawFail')), 'WidthdrawFail')
+const Withdraw = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/Withdraw')), 'Widthdraw')
+const BuyInto = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/BuyInto')), 'BuyInto')
+const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
+const ProtocolList = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolList')), 'ProtocolList')
+const NoticeList = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeList')), 'NoticeList')
+
 
 const instance = new Router({
   mode: 'history',
@@ -28,6 +33,39 @@ const instance = new Router({
       path: '/home',
       name: 'Home',
       component: Home,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/productinfo',
+      name: 'ProductInfo',
+      component: ProductInfo,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/protocollist',
+      name: 'ProtocolList',
+      component: ProtocolList,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/noticelist',
+      name: 'NoticeList',
+      component: NoticeList,
       meta: {
         title: 'Home',
         requireAuth: true,
@@ -87,9 +125,19 @@ const instance = new Router({
       }
     },
     {
-      path: '/withdrawfail',
-      name: 'WithdrawFail',
-      component: WithdrawFail,
+      path: '/withdraw',
+      name: 'Withdraw',
+      component: Withdraw,
+      meta: {
+        title: 'Home',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/buyinto',
+      name: 'BuyInto',
+      component: BuyInto,
       meta: {
         title: 'Home',
         requireAuth: true,

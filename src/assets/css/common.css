@@ -68,3 +68,13 @@ a:active{
 .mint-header .mint-button-text{
   color:black;
 }
+
+.mint-navbar .mint-tab-item.is-selected{
+  border-bottom: 3px solid #3965ff;
+  color: #3965ff;
+  margin-bottom: -3px;
+}
+
+.mint-tab-item-label{
+  font-size:0.16rem;
+}

@@ -16,7 +16,7 @@
     <div class="service">
       <Service />
     </div>
-    <MyTip/>
+    <MyTip :tipvisible="tipvisible" :configMessage="configMessage"/>
   </div>
 </template>
 
@@ -44,10 +44,14 @@ export default {
       toastinstance: {
         toast: null
       },
+      tipvisible:false,
       configMessage:{
+        imgsrc:'/static/img/right@2x.png',
         title:'购买成功',
-        subtile:'10,000.00',
-        des:'预计5月10日开始计息，5月11日首笔收益到账'
+        subtitle:'10,000.00',
+        des:'预计5月10日开始计息，5月11日首笔收益到账',
+        btnText:'查看账单',
+        callback:null
       }
     };
   },
@@ -67,10 +71,27 @@ export default {
         })
         return false
       }
+    },
+    showStatusTip(){
+      let that = this
+      this.tipvisible = true
+      this.configMessage = {
+        imgsrc:'/static/img/right@2x.png',
+        header:'购买完成',
+        title:'购买成功',
+        subtitle:'10,000.00',
+        des:'预计5月10日开始计息，5月11日首笔收益到账',
+        btnText:'查看账单',
+        callback:function(){
+          that.tipvisible = false
+        }
+      }
     }
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    this.showStatusTip();
+  },
   components: {
     MyHeader,
     Service,

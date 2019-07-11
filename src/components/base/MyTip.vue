@@ -1,16 +1,16 @@
 <template>
   <div class="mytip" v-show="tipvisible">
-    <div class="header"><i class="mui-icon mui-icon-arrowleft"/><span>购买完成</span><span class="close">关闭</span></div>
-    <img src="@/assets/img/right@2x.png"/>
+    <div class="header"><i class="mui-icon mui-icon-arrowleft"/><span>{{configMessage.header}}</span><span class="close">关闭</span></div>
+    <img :src="configMessage.imgsrc"/>
     <div class="tipcontent">
         <ul>
-            <li><span>购买成功！</span></li>
-            <li><span>10,000.00元</span></li>
-            <li>预计5月10日开始计息，5月11日首笔收益到账</li>
+            <li><span>{{configMessage.title}}</span></li>
+            <li><span>{{configMessage.subtitle}}</span></li>
+            <li>{{configMessage.des}}</li>
         </ul>
         
     </div>
-    <MyButton content="查看资产"/>
+    <MyButton :content="configMessage.btnText" @click.native="gotoSite"/>
     <div class="service">
         <Service/>
     </div>
@@ -27,6 +27,9 @@ export default {
     tipvisible: {
       default: true,
       type: Boolean
+    },
+    configMessage:{
+        
     }
   },
   data() {
@@ -38,6 +41,9 @@ export default {
   methods: {
     getValue() {
       this.$emit('input',this.value)
+    },
+    gotoSite(){
+        this.configMessage.callback()
     }
   },
   computed: {},
@@ -95,7 +101,7 @@ export default {
     margin-bottom:0.2rem;
 }
 .tipcontent ul li:nth-child(1) span{
-    margin-left:0.2rem;
+    margin-left:0.05rem;
 }
 .tipcontent ul li:nth-child(2){
     font-size:0.24rem;

@@ -87,7 +87,7 @@
         </ul>
     </div>
 
-    <div class="btncontainer"><MyButton :btnStyle="btnStyle"/></div>
+    <div class="btncontainer"><MyButton :btnStyle="btnStyle" @click.native="gotoSite"/></div>
 
     
 
@@ -123,7 +123,9 @@ export default {
     changeStatus() {
       this.visible = !this.visible;
     },
-
+    gotoSite(){
+      this.$router.push({ name: 'Buy', params: { userid: "123" } })
+    },
     setSerise() {
       this.serisedata = [
         {

@@ -38,5 +38,6 @@ button {
   border: none;
   outline: none;
   font-size: 0.15rem;
+  letter-spacing: 2px;
 }
 </style>

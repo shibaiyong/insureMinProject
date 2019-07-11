@@ -41,7 +41,6 @@ export default {
 .customerervice {
   text-align: center;
   padding: 0.15rem 0 0.1rem;
-
 }
 .customerervice dl dt {
   font-size: 0.14rem;

@@ -1,6 +1,6 @@
 <template>
   <mt-header :title="title">
-  <router-link to="/" slot="left">
+  <router-link :to="url" slot="left">
     <mt-button icon="back"></mt-button>
 
   </router-link>
@@ -20,6 +20,10 @@ export default {
     close:{
       default: '',
       type: String
+    },
+    url:{
+      type:String,
+      default:'/'
     }
   },
   data() {

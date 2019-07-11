@@ -23,7 +23,9 @@ const BuyInto = r => require.ensure([], () => r(require('@/components/page/perso
 const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 const ProtocolList = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolList')), 'ProtocolList')
 const NoticeList = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeList')), 'NoticeList')
-
+const NoticeDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeDetail')), 'NoticeDetail')
+const ProtocolDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolDetail')), 'ProtocolDetail')
+const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
 
 const instance = new Router({
   mode: 'history',
@@ -45,7 +47,7 @@ const instance = new Router({
       name: 'ProductInfo',
       component: ProductInfo,
       meta: {
-        title: 'Home',
+        title: 'ProductInfo',
         requireAuth: true,
         roles: ['superadmin']
       }
@@ -56,18 +58,48 @@ const instance = new Router({
       name: 'ProtocolList',
       component: ProtocolList,
       meta: {
-        title: 'Home',
+        title: 'ProtocolList',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/protocoldetail',
+      name: 'ProtocolDetail',
+      component: ProtocolDetail,
+      meta: {
+        title: 'ProtocolDetail',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/noticelist',
+      name: 'NoticeList',
+      component: NoticeList,
+      meta: {
+        title: 'NoticeList',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/noticedetail',
+      name: 'NoticeDetail',
+      component: NoticeDetail,
+      meta: {
+        title: 'NoticeDetail',
         requireAuth: true,
         roles: ['superadmin']
       }
     },
 
     {
-      path: '/noticelist',
-      name: 'NoticeList',
-      component: NoticeList,
+      path: '/buy',
+      name: 'Buy',
+      component: Buy,
       meta: {
-        title: 'Home',
+        title: 'Buy',
         requireAuth: true,
         roles: ['superadmin']
       }
@@ -78,7 +110,7 @@ const instance = new Router({
       name: 'PersonalCenter',
       component: PersonalCenter,
       meta: {
-        title: 'Home',
+        title: 'PersonalCenter',
         requireAuth: true,
         roles: ['superadmin']
       }
@@ -88,7 +120,7 @@ const instance = new Router({
       name: 'TransactionList',
       component: TransactionList,
       meta: {
-        title: 'Home',
+        title: 'TransactionList',
         requireAuth: true,
         roles: ['superadmin']
       }

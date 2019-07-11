@@ -37,7 +37,7 @@
           <span>低风险</span>
         </li>
         <li>
-          <MyButton @click.native="gotoPage('TransactionFilter')"></MyButton>
+          <MyButton @click.native="gotoPage('ProductInfo')"></MyButton>
         </li>
       </ul>
     </div>

@@ -4,11 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './vuex/store'
-import 'mint-ui/lib/style.css'
+// import 'mint-ui/lib/style.css'
 import '@/assets/utils/ajustScreen.js'
 import '@/assets/css/common.css'
 //按需引入 借助 babel-plugin-component
-import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui'
+import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, TabContainer, TabContainerItem, Field } from 'mint-ui'
 //以下是mint-ui完整引入
 //import MintUI from 'mint-ui'
 //Vue.use(MintUI)
@@ -22,7 +22,7 @@ Vue.component(Navbar.name, Navbar)
 Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
-
+Vue.component(Field.name, Field)
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

@@ -26,6 +26,10 @@ const NoticeList = r => require.ensure([], () => r(require('@/components/page/pr
 const NoticeDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeDetail')), 'NoticeDetail')
 const ProtocolDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolDetail')), 'ProtocolDetail')
 const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
+const EnterRealInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/EnterRealInfo')), 'EnterRealInfo')
+const BankList = r => require.ensure([], () => r(require('@/components/page/productdetail/BankList')), 'BankList')
+const SetPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/SetPassword')), 'SetPassword')
+const WithdrawCash = r => require.ensure([], () => r(require('@/components/page/personalcenter/WithdrawCash')), 'WithdrawCash')
 
 const instance = new Router({
   mode: 'history',
@@ -69,6 +73,36 @@ const instance = new Router({
       component: ProtocolDetail,
       meta: {
         title: 'ProtocolDetail',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/enterrealinfo',
+      name: 'EnterRealInfo',
+      component: EnterRealInfo,
+      meta: {
+        title: 'EnterRealInfo',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/setpassword',
+      name: 'SetPassword',
+      component: SetPassword,
+      meta: {
+        title: 'SetPassword',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/banklist',
+      name: 'BankList',
+      component: BankList,
+      meta: {
+        title: 'EnterRealInfo',
         requireAuth: true,
         roles: ['superadmin']
       }
@@ -175,7 +209,17 @@ const instance = new Router({
         requireAuth: true,
         roles: ['superadmin']
       }
-    }
+    },
+    {
+      path: '/withdrawcash',
+      name: 'WithdrawCash',
+      component: WithdrawCash,
+      meta: {
+        title: 'WithdrawCash',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
     
   ]
 })

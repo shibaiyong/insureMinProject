@@ -78,3 +78,10 @@ a:active{
 .mint-tab-item-label{
   font-size:0.16rem;
 }
+
+.mui-input-group::before{
+  height:0;
+}
+.mui-input-group::after{
+  height:0;
+}

@@ -5,13 +5,6 @@ Vue.use(Router)
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
 //const HelloEarth = resolve => require(['@/components/page/HelloEarth'], resolve)
 
-const HelloWorld = r => require.ensure([], () => r(require('@/components/page/HelloWorld')), 'HelloWorld')
-const HelloEarth = r => require.ensure([], () => r(require('@/components/page/HelloEarth')), 'HelloEarth')
-const ImageLazy = r => require.ensure([], () => r(require('@/components/page/ImageLazy')), 'ImageLazy')
-const UpDownUpdate = r => require.ensure([], () => r(require('@/components/page/UpDownUpdate')), 'UpDownUpdate')
-const VerticalSwiper = r => require.ensure([], () => r(require('@/components/base/VerticalSwiper')), 'VerticalSwiper')
-
-
 const Home = r => require.ensure([], () => r(require('@/components/page/home/Home')), 'Home')
 const TransactionFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/TransactionFilter')), 'TransactionFilter')
 const IncomeFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeFilter')), 'IncomeFilter')
@@ -30,7 +23,11 @@ const EnterRealInfo = r => require.ensure([], () => r(require('@/components/page
 const BankList = r => require.ensure([], () => r(require('@/components/page/productdetail/BankList')), 'BankList')
 const SetPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/SetPassword')), 'SetPassword')
 const WithdrawCash = r => require.ensure([], () => r(require('@/components/page/personalcenter/WithdrawCash')), 'WithdrawCash')
-
+const ModifyMobile = r => require.ensure([], () => r(require('@/components/page/set/ModifyMobile')), 'ModifyMobile')
+const EnterVerfiCode = r => require.ensure([], () => r(require('@/components/page/set/EnterVerfiCode')), 'EnterVerfiCode')
+const ResetPassword = r => require.ensure([], () => r(require('@/components/page/set/ResetPassword')), 'EnterVerfiCode') 
+const ElecAccount = r => require.ensure([], () => r(require('@/components/page/personalcenter/ElecAccount')), 'ElecAccount') 
+const Help = r => require.ensure([], () => r(require('@/components/page/help/Help')), 'Help') 
 const instance = new Router({
   mode: 'history',
   routes: [
@@ -220,6 +217,59 @@ const instance = new Router({
         roles: ['superadmin']
       }
     },
+
+    {
+      path: '/elecaccount',
+      name: 'ElecAccount',
+      component: ElecAccount,
+      meta: {
+        title: 'ElecAccount',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/modifymobile',
+      name: 'ModifyMobile',
+      component: ModifyMobile,
+      meta: {
+        title: 'ModifyMobile',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/enterverficode',
+      name: 'EnterVerfiCode',
+      component: EnterVerfiCode,
+      meta: {
+        title: 'EnterVerfiCode',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/resetpassword',
+      name: 'ResetPassword',
+      component: ResetPassword,
+      meta: {
+        title: 'ResetPassword',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+    {
+      path: '/help',
+      name: 'Help',
+      component: Help,
+      meta: {
+        title: 'Help',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    }
     
   ]
 })

@@ -177,7 +177,7 @@ export default {
   },
   watch: {
     selected(val) {
-      console.log(val);
+      console.log(val)
     }
   },
   beforeDestroy() {}
@@ -185,6 +185,7 @@ export default {
 </script>
 <style scoped>
 .service {
+  
 }
 .echartcontainer {
   width: 4rem;
@@ -194,51 +195,49 @@ export default {
   padding-top:0.2rem;
 }
 .mui-card{
-    margin:0;
+  margin:0;
 }
 .product{
-    background:white;
-    padding:0.2rem 0.16rem;
-    box-sizing: border-box;
+  background:white;
+  padding:0.2rem 0.16rem;
+  box-sizing: border-box;
 }
 .product ul li{
-    display:flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin-bottom:0.24rem;
+  display:flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom:0.24rem;
 }
 .product ul li span:nth-child(2){
-   margin-left:0.18rem;
-   display:inline-block;
-
-   color:#656565;
-   font-size: 0.15rem;
+  margin-left:0.18rem;
+  display:inline-block;
+  color:#656565;
+  font-size: 0.15rem;
 }
 .product ul li span:nth-child(1){
-    display: inline-block;
-    font-size:0.17rem;
-    color:#181818;
+  display: inline-block;
+  font-size:0.17rem;
+  color:#181818;
 }
 .product.productrecord ul li:nth-child(2) span:nth-child(1){
-    
-    width:0.7rem;
+  width:0.7rem;
 }
 .product.productrecord ul li:nth-child(2) span:nth-child(2){
-    width:2.5rem;
+  width:2.5rem;
 }
 .product h3{
-    font-size:0.2rem;
-    color:#181818;
-    margin-bottom:0.4rem;
-    border-left:3px solid #3964fe;
-    padding-left:0.07rem;
+  font-size:0.2rem;
+  color:#181818;
+  margin-bottom:0.4rem;
+  border-left:3px solid #3964fe;
+  padding-left:0.07rem;
 }
 
 .product.productdes ul li{
-    margin-bottom: 0px;
-    justify-content: space-between;
-    padding:0.12rem 0;
-    /* border-bottom:1px solid #c7d9fd; */
+  margin-bottom: 0px;
+  justify-content: space-between;
+  padding:0.12rem 0;
+  /* border-bottom:1px solid #c7d9fd; */
 }
 
 .mui-card .mui-navigate-right{
@@ -257,26 +256,25 @@ export default {
 }
 
 .permenulist ul li{
-    font-size:0.16rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding:0.12rem 0.2rem 0.12rem 0.16rem;
-    box-sizing: border-box;
-    margin-bottom: 0.1rem;
-    
+  font-size:0.16rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0.12rem 0.2rem 0.12rem 0.16rem;
+  box-sizing: border-box;
+  margin-bottom: 0.1rem;
 }
 .permenulist ul li img{
-    width:0.08rem;
-    height: 0.14rem;
-    vertical-align: middle;
-    margin-left:0.08rem;
+  width:0.08rem;
+  height: 0.14rem;
+  vertical-align: middle;
+  margin-left:0.08rem;
 }
 
 .btncontainer{
-    padding:0 0.16rem;
-    box-sizing: border-box;
-    margin-top:0.33rem;
+  padding:0 0.16rem;
+  box-sizing: border-box;
+  margin-top:0.33rem;
 }
 
 

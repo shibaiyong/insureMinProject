@@ -1,24 +1,21 @@
 <template>
   <div class="setpassword">
-    <MyHeader title="设置交易密码" />
-    <h3>请您设置交易密码</h3>
-    <div class="password mui-input-group">
-      <div class="mui-input-row">
-        <label>交易密码</label>
-        <input type="password" class="mui-input-password" placeholder="请输入交易密码" />
+    <MyHeader title="身份验证" />
+    <div class="content">
+      <div class="password mui-input-group">
+        <div class="mui-input-row">
+          <label>验证码</label>
+          <input type="text" class="mui-input-password" placeholder="请输入验证码" />
+        </div>
       </div>
-      <div class="mui-input-row">
-        <label>再次确认</label>
-        <input type="password" class="mui-input-password" placeholder="请再次输入交易密码" />
+      <div class="tip">
+        <span>注意:</span>
+        <span>请填写由民生银行下发的验证码，字母大小写需区分</span>
       </div>
-    </div>
-    <div class="tip">
-      <span>注意:</span>
-      <span>密码不能为连续、倒连续或重复数字，如123456、654321、00000等。</span>
-    </div>
 
-    <div class="complete">
-      <MyButton content="完成" :btnStyle="btnStyle" @click.native="submitData" />
+      <div class="complete">
+        <MyButton content="确定" :btnStyle="btnStyle" @click.native="submitData" />
+      </div>
     </div>
   </div>
 </template>
@@ -28,15 +25,14 @@ import MyHeader from "@/components/base/MyHeader.vue";
 import MyButton from "@/components/base/MyButton";
 import Service from "@/components/base/Service.vue";
 export default {
-  name: "SetPassword",
+  name: "EnterVerfiCode",
   props: {},
   data() {
     return {
       btnStyle: {
         width: "100%",
         height: "0.4rem",
-        background: "#ddd",
-        // background: "#3965ff",//输入状态根据短息验证码是否获取到
+        background: "#3965ff", //输入状态根据短息验证码是否获取到
         borderRadius: "0.2rem",
         color: "white"
       }
@@ -56,6 +52,10 @@ export default {
 };
 </script>
 <style scoped>
+.content{
+    background:white;
+    padding:0.24rem 0;
+}
 h3 {
   margin: 0.36rem 0 0.21rem;
   font-size: 0.16rem;

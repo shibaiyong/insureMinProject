@@ -2,7 +2,11 @@
   <div class="buy">
     <MyHeader title="提现" />
     <div class="inputcontainer">
-      <MyInput v-model="moneyvalue" />
+      <MyInput
+        v-model="moneyvalue"
+        placeholder="最多可以取出64000元"
+        @changeStatus="changeStatus"
+      />
     </div>
     <div class="all">全部取出</div>
     <h3></h3>
@@ -14,13 +18,13 @@
     <div class="way">
       <div class="mui-input-row mui-radio mui-left">
         <label>快速到账</label>
-        <input name="radio" type="radio" value='1' v-model="type"/>
+        <input name="radio" type="radio" value="1" v-model="type" />
         <span>实时到账，单日限额1万元，今日剩余10，000</span>
       </div>
 
       <div class="mui-input-row mui-radio mui-left">
         <label>普通到账</label>
-        <input name="radio" type="radio" value='2' v-model="type"/>
+        <input name="radio" type="radio" value="2" v-model="type" />
         <span>预计6月10日12:00前到账，不限额度，6月8日-6月9日仍有收益</span>
       </div>
     </div>
@@ -38,19 +42,18 @@ import MyHeader from "@/components/base/MyHeader.vue";
 import MyInput from "@/components/base/MyInput.vue";
 import Service from "@/components/base/Service.vue";
 import MyButton from "@/components/base/MyButton";
-import MyTip from "@/components/base/MyTip";
-import { Toast } from "mint-ui";
+import { Toast, MessageBox } from "mint-ui";
+import eventBus from "@/assets/utils/eventbus";
 export default {
   name: "WithdrawCash",
   props: {},
 
   data() {
     return {
-      moneyvalue: "",
+      moneyvalue: "1000",
       btnStyle: {
         height: "0.48rem",
         background: "#ddd",
-        // background: "#3965ff",//输入状态根据短息验证码是否获取到
         borderRadius: "0.24rem",
         color: "white",
         width: "92%"
@@ -58,52 +61,54 @@ export default {
       toastinstance: {
         toast: null
       },
-      type:'1'
+      type: "1",
     };
   },
   updated() {
-      console.log(this.type)
+    console.log(this.moneyvalue)
   },
   created() {},
   methods: {
     confirmBuy() {
       let val = this.moneyvalue;
       let reg = /^([0-9]{1,}[.]*[0-9]*)$/;
-      if (!reg.test(val)) {
+      if (val > 640000) {
         this.toastinstance.toast = Toast({
-          message: "购买金额需大于等于0.01元",
+          message: "超出最大取出金额",
           position: "center",
           duration: 2000
         });
-        return false;
+      } else if (val > 10000 && this.type == 1) {
+        this.toastinstance.toast = Toast({
+          message: "快速取出额度超过限制请尝试其他方式",
+          position: "center",
+          duration: 2000
+        });
+      } else if (val > 200000 && this.type == 2) {
+        MessageBox.confirm("取出金额过大，是否继续取出?").then(
+          action => {},
+          err => {
+            eventBus.$emit("changeValue", '')//点击取消后，触发清空输入框的事件
+          }
+        );
       }
     },
-    showStatusTip() {
-      let that = this;
-      this.tipvisible = true;
-      this.configMessage = {
-        imgsrc: "/static/img/right@2x.png",
-        header: "购买完成",
-        title: "购买成功",
-        subtitle: "10,000.00",
-        des: "预计5月10日开始计息，5月11日首笔收益到账",
-        btnText: "查看账单",
-        callback: function() {
-          that.tipvisible = false;
-        }
-      };
+    changeStatus( data ) {
+      if(data == 'blur'){
+        this.btnStyle.background = "#ddd"
+      }else{
+        this.btnStyle.background = "#3965ff"
+      }
+      
     }
   },
   computed: {},
-  mounted() {
-    this.showStatusTip();
-  },
+  mounted() {},
   components: {
     MyHeader,
     Service,
     MyInput,
-    MyButton,
-    MyTip
+    MyButton
   },
   beforeDestroy() {}
 };
@@ -158,19 +163,19 @@ export default {
   box-sizing: border-box;
   margin-top: 0.1rem;
 }
-.mui-radio span{
-    font-size:0.12rem;
-    color:#a5a5a5;
-    display:inline-block;
-    padding-left:0.6rem;
-    box-sizing:border-box;
-    padding-right:0.18rem;
+.mui-radio span {
+  font-size: 0.12rem;
+  color: #a5a5a5;
+  display: inline-block;
+  padding-left: 0.6rem;
+  box-sizing: border-box;
+  padding-right: 0.18rem;
 }
 
-.service{
-    position:absolute;
-    width:100%;
-    left:0;
-    bottom:0.1rem;
+.service {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0.1rem;
 }
 </style>

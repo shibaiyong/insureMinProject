@@ -6,6 +6,7 @@ Vue.use(Router)
 //const HelloEarth = resolve => require(['@/components/page/HelloEarth'], resolve)
 
 const Home = r => require.ensure([], () => r(require('@/components/page/home/Home')), 'Home')
+
 const TransactionFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/TransactionFilter')), 'TransactionFilter')
 const IncomeFilter = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeFilter')), 'IncomeFilter')
 const PersonalCenter = r => require.ensure([], () => r(require('@/components/page/personalcenter/PersonCenter')), 'PersonalCenter')
@@ -13,21 +14,31 @@ const TransactionList = r => require.ensure([], () => r(require('@/components/pa
 const IncomeList = r => require.ensure([], () => r(require('@/components/page/personalcenter/IncomeList')), 'IncomeList')
 const Withdraw = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/Withdraw')), 'Widthdraw')
 const BuyInto = r => require.ensure([], () => r(require('@/components/page/personalcenter/transactiondetails/BuyInto')), 'BuyInto')
+
+
 const ProductInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/ProductInfo')), 'ProductInfo')
 const ProtocolList = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolList')), 'ProtocolList')
 const NoticeList = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeList')), 'NoticeList')
 const NoticeDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/NoticeDetail')), 'NoticeDetail')
 const ProtocolDetail = r => require.ensure([], () => r(require('@/components/page/productdetail/ProtocolDetail')), 'ProtocolDetail')
-const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
 const EnterRealInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/EnterRealInfo')), 'EnterRealInfo')
 const BankList = r => require.ensure([], () => r(require('@/components/page/productdetail/BankList')), 'BankList')
+const UploadSucc = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadSucc')), 'UploadSucc')
+
+const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
+
 const SetPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/SetPassword')), 'SetPassword')
 const WithdrawCash = r => require.ensure([], () => r(require('@/components/page/personalcenter/WithdrawCash')), 'WithdrawCash')
-const ModifyMobile = r => require.ensure([], () => r(require('@/components/page/set/ModifyMobile')), 'ModifyMobile')
+const ModifyMobile = r => require.ensure([], () => r(require('@/components/page/set/modifymobile/ModifyMobile')), 'ModifyMobile')
 const EnterVerfiCode = r => require.ensure([], () => r(require('@/components/page/set/EnterVerfiCode')), 'EnterVerfiCode')
-const ResetPassword = r => require.ensure([], () => r(require('@/components/page/set/ResetPassword')), 'EnterVerfiCode') 
+const ResetPassword = r => require.ensure([], () => r(require('@/components/page/set/resetpassword/ResetPassword')), 'EnterVerfiCode') 
+const ReplaceBankCard = r => require.ensure([], () => r(require('@/components/page/set/replacebankcard/ReplaceBankCard')), 'ReplaceBankCard')
+const AddBankCard = r => require.ensure([], () => r(require('@/components/page/set/replacebankcard/AddBankCard')), 'AddBankCard')
+const Config = r => require.ensure([], () => r(require('@/components/page/set/Config')), 'Config') 
 const ElecAccount = r => require.ensure([], () => r(require('@/components/page/personalcenter/ElecAccount')), 'ElecAccount') 
 const Help = r => require.ensure([], () => r(require('@/components/page/help/Help')), 'Help') 
+
+
 const instance = new Router({
   mode: 'history',
   routes: [
@@ -99,7 +110,7 @@ const instance = new Router({
       name: 'BankList',
       component: BankList,
       meta: {
-        title: 'EnterRealInfo',
+        title: 'BankList',
         requireAuth: true,
         roles: ['superadmin']
       }
@@ -124,7 +135,16 @@ const instance = new Router({
         roles: ['superadmin']
       }
     },
-
+    {
+      path: '/uploadsucc',
+      name: 'UploadSucc',
+      component: UploadSucc,
+      meta: {
+        title: 'UploadSucc',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
     {
       path: '/buy',
       name: 'Buy',
@@ -230,6 +250,17 @@ const instance = new Router({
     },
 
     {
+      path: '/config',
+      name: 'Config',
+      component: Config,
+      meta: {
+        title: 'Config',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
       path: '/modifymobile',
       name: 'ModifyMobile',
       component: ModifyMobile,
@@ -245,6 +276,28 @@ const instance = new Router({
       component: EnterVerfiCode,
       meta: {
         title: 'EnterVerfiCode',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/replacebankcard',
+      name: 'ReplaceBankCard',
+      component: ReplaceBankCard,
+      meta: {
+        title: 'ReplaceBankCard',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/addbankcard',
+      name: 'AddBankCard',
+      component: AddBankCard,
+      meta: {
+        title: 'AddBankCard',
         requireAuth: true,
         roles: ['superadmin']
       }

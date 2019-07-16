@@ -8,10 +8,13 @@ import store from './vuex/store'
 import '@/assets/utils/ajustScreen.js'
 import '@/assets/css/common.css'
 //按需引入 借助 babel-plugin-component
-import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, TabContainer, TabContainerItem, Field } from 'mint-ui'
+import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, TabContainer, TabContainerItem, Field, Picker, Popup } from 'mint-ui'
 //以下是mint-ui完整引入
 //import MintUI from 'mint-ui'
 //Vue.use(MintUI)
+
+Vue.component(Popup.name, Popup);
+Vue.component(Picker.name, Picker)
 Vue.component(Button.name, Button)
 Vue.component(DatetimePicker.name, DatetimePicker)
 

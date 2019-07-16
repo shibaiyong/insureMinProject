@@ -85,3 +85,7 @@ a:active{
 .mui-input-group::after{
   height:0;
 }
+
+.mytip .mint-popup{
+  width:100%;
+}

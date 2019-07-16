@@ -90,25 +90,25 @@ export default {
   left: 0;
 }
 .password .newpass {
-  background: url(../../../assets/img/resetpassword/password@2x.png) no-repeat
+  background: url(../../../../assets/img/resetpassword/password@2x.png) no-repeat
     0.04rem center;
   background-size: 0.22rem 0.22rem;
 }
 
 .password .comfirmpass {
-  background: url(../../../assets/img/resetpassword/password@2x.png) no-repeat
+  background: url(../../../../assets/img/resetpassword/password@2x.png) no-repeat
     0.04rem center;
   background-size: 0.22rem 0.22rem;
 }
 
 .password .mobile {
-  background: url(../../../assets/img/resetpassword/mobile@2x.png) no-repeat
+  background: url(../../../../assets/img/resetpassword/mobile@2x.png) no-repeat
     0.04rem center;
   background-size: 0.22rem 0.22rem;
 }
 
 .password .messagecode {
-  background: url(../../../assets/img/resetpassword/verticode@2x.png) no-repeat
+  background: url(../../../../assets/img/resetpassword/verticode@2x.png) no-repeat
     0.04rem center;
   background-size: 0.22rem 0.22rem;
 }

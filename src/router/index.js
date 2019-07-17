@@ -3,7 +3,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
-//const HelloEarth = resolve => require(['@/components/page/HelloEarth'], resolve)
+const UpDownUpdate = resolve => require(['@/components/page/UpDownUpdate'], resolve)
 
 const Home = r => require.ensure([], () => r(require('@/components/page/home/Home')), 'Home')
 
@@ -24,12 +24,16 @@ const ProtocolDetail = r => require.ensure([], () => r(require('@/components/pag
 const EnterRealInfo = r => require.ensure([], () => r(require('@/components/page/productdetail/EnterRealInfo')), 'EnterRealInfo')
 const BankList = r => require.ensure([], () => r(require('@/components/page/productdetail/BankList')), 'BankList')
 const UploadSucc = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadSucc')), 'UploadSucc')
+const UploadIdPhotos = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadIdPhotos')), 'UploadIdPhotos')
+const AssessReport = r => require.ensure([], () => r(require('@/components/page/productdetail/AssessReport')), 'AssessReport')
 
 const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
 
 const SetPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/SetPassword')), 'SetPassword')
 const WithdrawCash = r => require.ensure([], () => r(require('@/components/page/personalcenter/WithdrawCash')), 'WithdrawCash')
 const ModifyMobile = r => require.ensure([], () => r(require('@/components/page/set/modifymobile/ModifyMobile')), 'ModifyMobile')
+const TakePhoto = r => require.ensure([], () => r(require('@/components/page/set/modifymobile/TakePhoto')), 'TakePhoto')
+
 const EnterVerfiCode = r => require.ensure([], () => r(require('@/components/page/set/EnterVerfiCode')), 'EnterVerfiCode')
 const ResetPassword = r => require.ensure([], () => r(require('@/components/page/set/resetpassword/ResetPassword')), 'EnterVerfiCode') 
 const ReplaceBankCard = r => require.ensure([], () => r(require('@/components/page/set/replacebankcard/ReplaceBankCard')), 'ReplaceBankCard')
@@ -43,6 +47,17 @@ const instance = new Router({
   mode: 'history',
   routes: [
     { path: '/', redirect: '/home' },
+    {
+      path: '/updownupdate',
+      name: 'UpDownUpdate',
+      component: UpDownUpdate,
+      meta: {
+        title: 'UpDownUdate',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
     {
       path: '/home',
       name: 'Home',
@@ -145,6 +160,30 @@ const instance = new Router({
         roles: ['superadmin']
       }
     },
+
+    
+    {
+      path: '/assessreport',
+      name: 'AssessReport',
+      component: AssessReport,
+      meta: {
+        title: 'AssessReport',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
+    {
+      path: '/uploadidphotos',
+      name: 'UploadIdPhotos',
+      component: UploadIdPhotos,
+      meta: {
+        title: 'UploadIdPhotos',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
     {
       path: '/buy',
       name: 'Buy',
@@ -270,6 +309,18 @@ const instance = new Router({
         roles: ['superadmin']
       }
     },
+
+    {
+      path: '/takephoto',
+      name: 'TakePhoto',
+      component: TakePhoto,
+      meta: {
+        title: 'TakePhoto',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
     {
       path: '/enterverficode',
       name: 'EnterVerfiCode',

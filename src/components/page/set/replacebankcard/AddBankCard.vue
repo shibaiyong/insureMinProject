@@ -59,21 +59,21 @@ export default {
     changeNumber(keepTime, cycleTime) {
       //数字滚动叠加
 
-      let span = this.numberEnd - this.numberStart;
-      let translateTime = cycleTime;
-      let changeTime = Math.ceil(translateTime / keepTime);
-      let step = Math.ceil(span / changeTime);
+      let span = this.numberEnd - this.numberStart
+      let translateTime = cycleTime
+      let changeTime = Math.ceil(translateTime / keepTime)
+      let step = Math.ceil(span / changeTime)
       let changeNumberInterval = setInterval(() => {
-        this.numberStart = this.numberStart + step;
+        this.numberStart = this.numberStart + step
         if (this.numberStart >= this.numberEnd && span >= 0) {
-          clearInterval(changeNumberInterval);
-          this.numberStart = this.numberEnd;
+          clearInterval(changeNumberInterval)
+          this.numberStart = this.numberEnd
         } else if (this.numberStart <= this.numberEnd && span < 0) {
-          clearInterval(changeNumberInterval);
-          this.numberStart = this.numberEnd;
+          clearInterval(changeNumberInterval)
+          this.numberStart = this.numberEnd
           this.ifFetchCode = true
         }
-      }, keepTime);
+      }, keepTime)
     },
     getCode(){
         this.ifFetchCode = false

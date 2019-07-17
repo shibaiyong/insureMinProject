@@ -5,7 +5,9 @@ export const planCheckName = params => {
 }
 
 export const planSave = params => {
-    return axios.post("/plan/save", params).then(res => res.data)
+    
+   return axios.post("/plan/save", params).then(res => res.data)
 }
+
 
 

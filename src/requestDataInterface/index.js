@@ -1,12 +1,23 @@
 import axiosInstance from '@/axiosInstance'
+import qs from 'qs'
 
-export const planCheckName = params => {
-    return axiosInstance.get('http://ons.me/tools/dropload/json.php?page='+params.page+'&size='+params.size, { params: {} }).then(res => res.data)
+
+export const uploadPhoto = params => {
+    // /accountOpen/upload
+    let postData = qs.stringify( params )
+    return axiosInstance.post("/product/LERybProdInfoQuery", postData).then(res => res.data)
 }
 
-export const planSave = params => {
+
+
+export const ProdInfoQuery = params => {
     
-   return axios.post("/plan/save", params).then(res => res.data)
+    return axiosInstance.post("/product/LERybProdInfoQuery").then(res => res.data)
+}
+
+export const ProdInfoHisQuery = params => {
+    
+    return axiosInstance.post("/product/LERybProdHisInfoQuery").then(res => res.data)
 }
 
 

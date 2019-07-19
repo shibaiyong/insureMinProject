@@ -65,8 +65,8 @@ export default {
       btnStyle: {
         width: "100%",
         height: "0.4rem",
-        background: "#ddd",
-        // background: "#3965ff",//输入状态根据短息验证码是否获取到
+        //background: "#ddd",
+        background: "#3965ff",//输入状态根据短息验证码是否获取到
         borderRadius: "0.2rem",
         color: "white"
       },

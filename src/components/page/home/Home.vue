@@ -27,7 +27,7 @@
       <h3>如意宝</h3>
       <ul>
         <li>
-          <span class="percent">2.70</span>
+          <span class="percent">{{annualrate}}</span>
           <span class="percentico">%</span>
         </li>
         <li class="incomerate">近七日年化收益率</li>
@@ -65,6 +65,8 @@ import MyButton from "@/components/base/MyButton"
 import "swiper/dist/css/swiper.css"
 import MyHeader from "@/components/base/MyHeader"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
+import { ProdInfoQuery } from "@/requestDataInterface"
+
 export default {
   props: {},
   data() {
@@ -93,7 +95,8 @@ export default {
         { id: 2, img: '/static/img/lowrisk@2x.png', slogan: '低风险', explain:'资金随存随取'},
         { id: 3, img: '/static/img/morestable@2x.png', slogan: '更稳定', explain:'民生银行代销'},
         { id: 4, img: '/static/img/moresafe@2x.png', slogan: '更安全', explain:'资金直进银行'}
-      ]
+      ],
+      annualrate:'-'
     }
   },
   created() {},
@@ -107,13 +110,21 @@ export default {
     },
     gotoPage( url ){
       this.$router.push({ name: url, params: { userid: "123" } });
+    },
+    queryAnnualRate(){
+      ProdInfoQuery().then(res => {
+
+        console.log(res)
+        
+      }
+      ).catch(err => console.log(err))
     }
   },
   computed: {
 
   },
   mounted() {
-    this.destroySwiper();
+   this.queryAnnualRate()
   },
   components: {
     MyHeader,

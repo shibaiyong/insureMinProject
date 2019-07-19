@@ -47,16 +47,25 @@
     <div class="service">
       <Service />
     </div>
-    <input type="file" id="file" @change="changeImage($event)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+
+    <form action="http://192.168.129.49:8080/cmbcFund_war_exploded/accountOpen/upload" method="post" enctype="multipart/form-data">
+
+      <input type="file" id="file" @change="changeImage($event)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+
+      <input type="submit" id="push"/>
+
+    </form>
+    
 
     <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
   </div>
 </template>
 
 <script>
-import Service from "@/components/base/Service.vue";
-import MyButton from "@/components/base/MyButton";
-import MyHeader from "@/components/base/MyHeader";
+import Service from "@/components/base/Service.vue"
+import MyButton from "@/components/base/MyButton"
+import MyHeader from "@/components/base/MyHeader"
+import { uploadPhoto } from "@/requestDataInterface"
 export default {
   name: "UploadIdPhotos",
   props: {},
@@ -79,13 +88,22 @@ export default {
   created() {},
   methods: {
     showActionSheet() {
-      this.sheetVisible = true;
+      this.sheetVisible = true
     },
     getLibrary() {},
     uploadfile() {
       let file = document.getElementById("file")
       let FormDataObject = new FormData()
-      FormDataObject.append('front',file.files[0])
+      
+      FormDataObject.append('filea',file.files[0])
+      
+      console.log(file.files[0])
+      
+      uploadPhoto({IdPASide:'1',IdPBSide:'2',IdNo:'3',CifName:'4' }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
     },
     changeImage(e) {
       var file = e.target.files[0]

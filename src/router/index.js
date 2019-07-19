@@ -3,7 +3,6 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 //const HelloWorld = resolve => require(['@/components/page/HelloWorld'], resolve)
-const UpDownUpdate = resolve => require(['@/components/page/UpDownUpdate'], resolve)
 
 const Home = r => require.ensure([], () => r(require('@/components/page/home/Home')), 'Home')
 
@@ -47,16 +46,6 @@ const instance = new Router({
   mode: 'history',
   routes: [
     { path: '/', redirect: '/home' },
-    {
-      path: '/updownupdate',
-      name: 'UpDownUpdate',
-      component: UpDownUpdate,
-      meta: {
-        title: 'UpDownUdate',
-        requireAuth: true,
-        roles: ['superadmin']
-      }
-    },
 
     {
       path: '/home',

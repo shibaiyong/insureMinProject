@@ -5,8 +5,8 @@ import axios from 'axios'
 
 // 创建实例
 let axiosInstance = axios.create({
-    // baseURL:'198.139.126.39'
-    timeout:3000
+    baseURL:'http://192.168.129.49:8080/cmbcFund_war_exploded',
+    timeout:60000
 })
 
 // 请求拦截器

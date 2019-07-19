@@ -116,10 +116,10 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import Service from "@/components/base/Service.vue";
-import MyButton from "@/components/base/MyButton";
-import { ProdInfoHisQuery } from "@/requestDataInterface";
+import MyHeader from "@/components/base/MyHeader.vue"
+import Service from "@/components/base/Service.vue"
+import MyButton from "@/components/base/MyButton"
+import { ProdInfoHisQuery } from "@/requestDataInterface"
 
 export default {
   name: "ProductInfo",
@@ -153,11 +153,12 @@ export default {
       let arr = []
       let brr = []
       let crr = []
+      
       for(var i = 0; i < data.length; i++){
-        arr.push( 100 * data[i].AnnualReturnBy7 )
-        brr.push( data[i].ProfitPerAcc )
-        // crr.push( data[i].NavDate )
-        console.log(data[i].NavDate.slice(5,7))
+        let item = data[i]
+        arr.push( 100 * item.AnnualReturnBy7 )
+        brr.push( item.ProfitPerAcc )
+        crr.push( item.NavDate.slice(6)+'/'+item.NavDate.slice(4,6) )
       }
       this.serisedataRate = [
         {
@@ -174,10 +175,8 @@ export default {
         }
       ]
 
-
-      
-      this.initeEcharts("incomerate",this.setXaxisData(),this.serisedataRate)
-      this.initeEcharts("income",this.setXaxisData(),this.serisedataProfit)
+      this.initeEcharts("incomerate",crr,this.serisedataRate)
+      this.initeEcharts("income",crr,this.serisedataProfit)
     },
 
     setXaxisData() {

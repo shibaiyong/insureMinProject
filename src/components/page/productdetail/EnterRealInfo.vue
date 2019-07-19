@@ -17,7 +17,7 @@
           <input type="text" class="mui-input-clear realname" placeholder="请输入身份证号码" />
         </div>
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" />
+          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" @blur="queryBank"/>
           <span id="verifycode">
             <img src="@/assets/img/chinabank.png" />
           </span>
@@ -56,7 +56,9 @@
 import MyHeader from "@/components/base/MyHeader.vue"
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
-import { Toast } from "mint-ui";
+import { Toast } from "mint-ui"
+import { DebitCardQuery } from "@/requestDataInterface"
+
 export default {
   name: "ProductInfo",
   props: {},
@@ -77,14 +79,15 @@ export default {
   created() {},
   methods: {
     gotoSite() {
-      this.$router.push({ name: "BankList" });
+      this.$router.push({ name: "BankList" })
     },
     submitData() {
-      this.toastinstance = Toast({
-        message: "购买金额需大于等于0.01元",
-        position: "center",
-        duration: 2000
-      });
+      this.$router.push('/uploadidphotos')
+    },
+    queryBank(){
+      DebitCardQuery().then(res=>{
+        console.log(res)
+      }).catch(err=>{console.log(err)})
     }
   },
   computed: {},

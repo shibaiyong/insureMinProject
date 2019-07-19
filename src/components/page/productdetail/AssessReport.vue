@@ -98,9 +98,11 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import Service from "@/components/base/Service.vue";
-import MyButton from "@/components/base/MyButton";
+import MyHeader from "@/components/base/MyHeader.vue"
+import Service from "@/components/base/Service.vue"
+import MyButton from "@/components/base/MyButton"
+import { RiskQuestionQuery } from "@/requestDataInterface"
+
 export default {
   name: "AssessReport",
   props: {},
@@ -116,9 +118,19 @@ export default {
     };
   },
   created() {},
-  methods: {},
-  computed: {},
-  mounted() {},
+  methods: {
+    gotoSite(){
+      
+    },
+    RiskQuestionQuery(){
+      RiskQuestionQuery().then(res => {
+        console.log(res)
+      }).catch(err => {console.log( err )})
+    }
+  },
+  mounted() {
+    this.RiskQuestionQuery()
+  },
   components: {
     MyHeader,
     Service,

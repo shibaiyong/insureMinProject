@@ -5,12 +5,12 @@
       <h3>{{'请上传'+ username +'本人身份证正反面照片'}}</h3>
 
       <div class="frontphotos">
-        <img :src="imgsrc" @click="showActionSheet" />
+        <img :src="IdPASide" @click="showActionSheet('IdPASide')" />
       </div>
       <p class="fronttext">上传身份证正面照片</p>
 
       <div class="reversephotos">
-        <img src="@/assets/img/takephotos/reverseidcard@2x.png" />
+        <img :src="IdPBSide" @click="showActionSheet('IdPBSide')"/>
       </div>
       <p class="reversetext">上传身份证反面照片</p>
       <div class="line"></div>
@@ -47,16 +47,8 @@
     <div class="service">
       <Service />
     </div>
-
-    <form action="http://192.168.129.49:8080/cmbcFund_war_exploded/accountOpen/upload" method="post" enctype="multipart/form-data">
-
-      <input type="file" id="file" @change="changeImage($event)" accept="image/gif,image/jpeg,image/jpg,image/png"/>
-
-      <input type="submit" id="push"/>
-
-    </form>
-    
-
+    <input type="file" id="IdPASide" @change="changeImage($event,'IdPASide')" accept="image/gif,image/jpeg,image/jpg,image/png"/>
+    <input type="file" id="IdPBSide" @change="changeImage($event,'IdPBSide')" accept="image/gif,image/jpeg,image/jpg,image/png"/>
     <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
   </div>
 </template>
@@ -70,7 +62,8 @@ export default {
   name: "UploadIdPhotos",
   props: {},
   data() {
-    let that = this;
+    let that = this
+    this.type = "IdPASide"
     return {
       username: "张某某",
       btnStyle: {
@@ -82,42 +75,48 @@ export default {
       },
       actions: [{ name: "从相册中选择", method: that.getLibrary }],
       sheetVisible: false,
-      imgsrc: require("../../../assets/img/takephotos/frontidcard@2x.png")
-    };
+      IdPASide: require("@/assets/img/takephotos/frontidcard@2x.png"),
+      IdPBSide: require("@/assets/img/takephotos/reverseidcard@2x.png")
+    }
   },
   created() {},
   methods: {
-    showActionSheet() {
+    showActionSheet(type) {
       this.sheetVisible = true
+      this.type = type
     },
-    getLibrary() {},
+    getLibrary() {
+      let file = document.getElementById(this.type)
+      file.click()
+    },
     uploadfile() {
       let file = document.getElementById("file")
       let FormDataObject = new FormData()
-      
+      this.$router.push('/uploadsucc')
       FormDataObject.append('filea',file.files[0])
       
-      console.log(file.files[0])
-      
-      uploadPhoto({IdPASide:'1',IdPBSide:'2',IdNo:'3',CifName:'4' }).then(res => {
+    },
+    changeImage(event,type) {
+      let reader = new FileReader()
+      let FormDataObject = new FormData()
+      let that = this
+      let file = event.target.files[0]
+      FormDataObject.append('filea',file)
+      FormDataObject.append('type',type)
+      uploadPhoto(FormDataObject).then(res => {
         console.log(res)
       }).catch(err => {
         console.log(err)
       })
-    },
-    changeImage(e) {
-      var file = e.target.files[0]
-      var reader = new FileReader()
-      var that = this
+      
       reader.readAsDataURL(file)
       reader.onload = function(e) {
-        that.imgsrc = this.result
+        that[type] = this.result
       };
     }
   },
   computed: {},
   mounted() {
-    this.getLibrary();
   },
   components: {
     MyButton,

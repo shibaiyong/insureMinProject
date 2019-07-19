@@ -18,19 +18,40 @@
     <div class="password mui-input-group">
       <div class="mui-input-row">
         <label>住址</label>
-        <input type="text" class="mui-input-clear addre" placeholder="请输入住址" v-model="personinfo.addre"/>
+        <input
+          type="text"
+          class="mui-input-clear addre"
+          placeholder="请输入住址"
+          v-model="personinfo.addre"
+        />
       </div>
       <div class="mui-input-row">
         <label>街道</label>
-        <input type="text" class="mui-input-clear road" placeholder="请输入街道" v-model="personinfo.road"/>
+        <input
+          type="text"
+          class="mui-input-clear road"
+          placeholder="请输入街道"
+          v-model="personinfo.road"
+        />
       </div>
       <div class="mui-input-row">
         <label>公司</label>
-        <input type="text" class="mui-input-clear company" placeholder="请输入公司" v-model="personinfo.company"/>
+        <input
+          type="text"
+          class="mui-input-clear company"
+          placeholder="请输入公司"
+          v-model="personinfo.company"
+        />
       </div>
       <div class="mui-input-row">
         <label>职业</label>
-        <input type="text" class="mui-input-clear occupation" placeholder="请输入职业" v-model="personinfo.occupation" @focus="popupVisible=true"/>
+        <input
+          type="text"
+          class="mui-input-clear occupation"
+          placeholder="请输入职业"
+          v-model="personinfo.Occupation"
+          @focus="popupVisible=true"
+        />
       </div>
     </div>
     <div class="complete">
@@ -41,29 +62,35 @@
       <Service />
     </div>
     <mt-popup v-model="popupVisible" position="bottom" :closeOnClickModal="false">
-        <div class="btn"><span @click="popupVisible=false">取消</span><span @click="assignVal">确定</span></div>
-        <mt-picker :slots="slots" @change="onValuesChange" value-key="occupation"></mt-picker>
+      <div class="btn">
+        <span @click="popupVisible=false">取消</span>
+        <span @click="assignVal">确定</span>
+      </div>
+      <mt-picker :slots="slots" @change="onValuesChange" value-key="Occupation"></mt-picker>
     </mt-popup>
-    
   </div>
 </template>
 
 <script>
-import Service from "@/components/base/Service.vue";
-import MyButton from "@/components/base/MyButton";
-import MyHeader from "@/components/base/MyHeader";
+import Service from "@/components/base/Service.vue"
+import MyButton from "@/components/base/MyButton"
+import MyHeader from "@/components/base/MyHeader"
+import { OccupationListQuery } from "@/requestDataInterface"
+
 export default {
   name: "UploadSucc",
   props: {},
   data() {
-    this.middlevarible = null  
+    this.Occupation = null
+    this.OctId = null
     return {
       value: "",
-      personinfo:{
-          addre:'',
-          road:'',
-          company:'',
-          occupation:''
+      personinfo: {
+        addre: "",
+        road: "",
+        company: "",
+        Occupation: "",
+        OctId:""
       },
       btnStyle: {
         width: "100%",
@@ -72,16 +99,17 @@ export default {
         borderRadius: "0.2rem",
         color: "white"
       },
-      popupVisible:false,
+      popupVisible: false,
+
       slots: [
         {
           flex: 1,
           values: [
-            { id:1, occupation: "司法专业人员" },
-            { id:2, occupation: "经济、金融专业人员" },
-            { id:3, occupation: "教学专业人员" },
-            { id:4, occupation: "警察、保安、消防专业人员" },
-            { id:5, occupation: "运输、快递、邮政从业人员" }
+            { OctId: 1, Occupation: "司法专业人员" },
+            { OctId: 2, Occupation: "经济、金融专业人员" },
+            { OctId: 3, Occupation: "教学专业人员" },
+            { OctId: 4, Occupation: "警察、保安、消防专业人员" },
+            { OctId: 5, Occupation: "运输、快递、邮政从业人员" }
           ],
           className: "slot1",
           textAlign: "center"
@@ -91,20 +119,47 @@ export default {
   },
   created() {},
   methods: {
-    gotoSite() {},
+    gotoSite() {
+      this.$router.push('/assessreport')
+    },
     onValuesChange(picker, values) {
-      this.middlevarible = values[0].occupation
+      this.Occupation = values[0].Occupation
+      this.OctId = values[0].OctId
     },
-    assignVal(){
-        this.personinfo.occupation = this.middlevarible
-        this.popupVisible = false
+    assignVal() {
+      this.personinfo.Occupation = this.Occupation
+      this.personinfo.OctId = this.OctId
+      this.popupVisible = false
     },
-    showPopUp(){
-        this.popupVisible = true
+    showPopUp() {
+      this.popupVisible = true
+    },
+    OccupationListQuery() {
+      OccupationListQuery()
+        .then(res => {
+          if (res.code == 2000) {
+            this.setOccupationList(res.result.List)
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    setOccupationList(data) {
+      this.slots = [
+        {
+          flex: 1,
+          values: data,
+          className: "slot1",
+          textAlign: "center"
+        }
+      ]
     }
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    this.OccupationListQuery()
+  },
   components: {
     MyButton,
     Service,
@@ -115,19 +170,19 @@ export default {
 };
 </script>
 <style scoped>
-.btn{
-    width:100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.2rem 0.14rem 0 0.14rem;
-    font-size:0.16rem;
+.btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0.14rem 0 0.14rem;
+  font-size: 0.16rem;
 }
-.btn span:nth-child(1){
-    color:#999;
+.btn span:nth-child(1) {
+  color: #999;
 }
-.btn span:nth-child(2){
-    color:#3965ff;
+.btn span:nth-child(2) {
+  color: #3965ff;
 }
 .password {
   padding: 0 0.1rem;
@@ -138,23 +193,25 @@ export default {
   color: #181818;
   font-size: 0.17rem;
   text-align: left;
-  width:30%;
+  width: 30%;
 }
 
-.password .mui-input-row .addre, .password .mui-input-row .occupation{
-    background:url(../../../assets/img/rightarow@2x.png) no-repeat right center;
-    background-size:0.08rem 0.15rem;
+.password .mui-input-row .addre,
+.password .mui-input-row .occupation {
+  background: url(../../../assets/img/rightarow@2x.png) no-repeat right center;
+  background-size: 0.08rem 0.15rem;
 }
 
-.password .mui-input-row .road, .password .mui-input-row .company{
-    background:url(../../../assets/img/edit@2x.png) no-repeat right center;
-    background-size:0.12rem 0.12rem;
+.password .mui-input-row .road,
+.password .mui-input-row .company {
+  background: url(../../../assets/img/edit@2x.png) no-repeat right center;
+  background-size: 0.12rem 0.12rem;
 }
 
 .password .mui-input-row input {
-    width:70%;
-    text-align: right;
-    padding-right:0.24rem;
+  width: 70%;
+  text-align: right;
+  padding-right: 0.24rem;
 }
 
 .password .mui-input-row input::placeholder {

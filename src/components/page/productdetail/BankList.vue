@@ -33,22 +33,31 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import Service from "@/components/base/Service.vue";
+import MyHeader from "@/components/base/MyHeader.vue"
+import Service from "@/components/base/Service.vue"
+
 export default {
   name: "BankList",
   props: {},
   data() {
-    return {};
+    return {}
   },
   created() {},
   methods: {
-    changeStatus() {
-      this.visible = !this.visible;
+    OccupationListQuery(){
+      OccupationListQuery().then(
+        res => {
+          console.log(res)
+        }
+      ).catch(
+        err => {console.log(err)}
+      )
     }
   },
-  computed: {},
-  mounted() {},
+
+  mounted() {
+    this.OccupationListQuery()
+  },
   components: {
     MyHeader,
     Service

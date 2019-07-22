@@ -18,16 +18,21 @@ export const ProdInfoHisQuery = params => {
 
 //上传身份证照片
 export const uploadPhoto = params => {
-    // 
-    // let postData
-    // if(params){
-    //     postData = qs.stringify( params )
-    // }
+    
     return axiosInstance.post("/accountOpen/upload", params).then(res => res.data)
+}
+//照片上传开户接口
+export const photoUpload = params => {
+    let postData
+    if(params){
+        postData = qs.stringify( params )
+    }
+    return axiosInstance.post("/accountOpen/LEIdPhotoUpload", postData).then(res => res.data)
 }
 
 //借记卡信息查询
 export const DebitCardQuery = params => {
+    
     return axiosInstance.post("/accountOpen/LECardBinQuery",params).then(res => res.data)
 }
 

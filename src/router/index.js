@@ -25,6 +25,7 @@ const BankList = r => require.ensure([], () => r(require('@/components/page/prod
 const UploadSucc = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadSucc')), 'UploadSucc')
 const UploadIdPhotos = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadIdPhotos')), 'UploadIdPhotos')
 const AssessReport = r => require.ensure([], () => r(require('@/components/page/productdetail/AssessReport')), 'AssessReport')
+//const EnterVerfiCode = r => require.ensure([], () => r(require('@/components/page/productdetail/EnterVerfiCode')), 'EnterVerfiCode')
 
 const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
 

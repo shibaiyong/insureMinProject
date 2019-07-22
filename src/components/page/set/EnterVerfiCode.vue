@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import MyButton from "@/components/base/MyButton";
-import Service from "@/components/base/Service.vue";
+import MyHeader from "@/components/base/MyHeader.vue"
+import MyButton from "@/components/base/MyButton"
+import Service from "@/components/base/Service.vue"
 export default {
   name: "EnterVerfiCode",
   props: {},

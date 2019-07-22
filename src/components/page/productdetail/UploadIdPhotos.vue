@@ -57,7 +57,7 @@
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
 import MyHeader from "@/components/base/MyHeader"
-import { uploadPhoto } from "@/requestDataInterface"
+import { uploadPhoto, photoUpload } from "@/requestDataInterface"
 export default {
   name: "UploadIdPhotos",
   props: {},
@@ -75,8 +75,8 @@ export default {
       },
       actions: [{ name: "从相册中选择", method: that.getLibrary }],
       sheetVisible: false,
-      IdPASide: require("@/assets/img/takephotos/frontidcard@2x.png"),
-      IdPBSide: require("@/assets/img/takephotos/reverseidcard@2x.png")
+      IdPASide: require("@/assets/img/takephotos/reverseidcard@2x.png"),
+      IdPBSide: require("@/assets/img/takephotos/frontidcard@2x.png")
     }
   },
   created() {},
@@ -90,10 +90,17 @@ export default {
       file.click()
     },
     uploadfile() {
-      let file = document.getElementById("file")
-      let FormDataObject = new FormData()
-      this.$router.push('/uploadsucc')
-      FormDataObject.append('filea',file.files[0])
+      let IdPASide = localStorage.getItem('IdPASide')
+      let IdPBSide = localStorage.getItem('IdPBSide')
+      photoUpload({ IdPASide, IdPBSide }).then(
+        res => {
+          console.log(res)
+        }
+      ).catch(
+        err => {
+          console.log(err)
+        }
+      )
       
     },
     changeImage(event,type) {
@@ -105,6 +112,9 @@ export default {
       FormDataObject.append('type',type)
       uploadPhoto(FormDataObject).then(res => {
         console.log(res)
+        if(res.code==2000){
+          localStorage.setItem(type,res.result)
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -127,8 +137,8 @@ export default {
 };
 </script>
 <style scoped>
-#file {
-  /* display:none; */
+#IdPASide,#IdPBSide {
+  display:none;
 }
 .photos h3 {
   font-size: 0.2rem;

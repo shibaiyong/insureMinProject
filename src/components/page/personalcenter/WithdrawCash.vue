@@ -38,12 +38,12 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import MyInput from "@/components/base/MyInput.vue";
-import Service from "@/components/base/Service.vue";
-import MyButton from "@/components/base/MyButton";
-import { Toast, MessageBox } from "mint-ui";
-import eventBus from "@/assets/utils/eventbus";
+import MyHeader from "@/components/base/MyHeader.vue"
+import MyInput from "@/components/base/MyInput.vue"
+import Service from "@/components/base/Service.vue"
+import MyButton from "@/components/base/MyButton"
+import { Toast, MessageBox } from "mint-ui"
+import eventBus from "@/assets/utils/eventbus"
 export default {
   name: "WithdrawCash",
   props: {},

@@ -11,24 +11,24 @@
     <div class="memeberregister">
       <div class="bankitem memeberinfo">
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear agentnumber" placeholder="请输入真实姓名" />
+          <input type="text" class="mui-input-clear agentnumber" placeholder="请输入真实姓名" v-model="personinfo.realname"/>
         </div>
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear realname" placeholder="请输入身份证号码" />
+          <input type="text" class="mui-input-clear realname" placeholder="请输入身份证号码" v-model="personinfo.idcardnum"/>
         </div>
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" @blur="queryBank"/>
+          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" @blur="queryBank" v-model="personinfo.bankcardnum"/>
           <span id="verifycode">
             <img src="@/assets/img/chinabank.png" />
           </span>
         </div>
 
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear idcard" placeholder="请输入银行预留手机号" />
+          <input type="text" class="mui-input-clear idcard" placeholder="请输入银行预留手机号" v-model="personinfo.mobile"/>
         </div>
 
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear messagecode" placeholder="请输入短信验证码" />
+          <input type="text" class="mui-input-clear messagecode" placeholder="请输入短信验证码" v-model="personinfo.messagecode"/>
           <span id="messagecode">获取验证码</span>
         </div>
       </div>
@@ -73,7 +73,15 @@ export default {
         color: "white"
       },
       selected: true,
-      toastinstance:null
+      toastinstance:null,
+      personinfo:{
+        realname:'',
+        idcardnum:'',
+        bankcardnum:'',
+        mobile:'',
+        messagecode:''
+
+      }
     };
   },
   created() {},
@@ -82,7 +90,10 @@ export default {
       this.$router.push({ name: "BankList" })
     },
     submitData() {
-      this.$router.push('/uploadidphotos')
+      //存储实名制信息，在开户页面获取，一并提交
+      localStorage.setItem('personinfo',JSON.stringify(this.personinfo))
+      //上传身份证照片，需要的两个字段值
+      this.$router.push({name:'UploadIdPhotos', params:{ CifName:this.personinfo.realname, IdNo:this.personinfo.idcardnum}})
     },
     queryBank(){
       DebitCardQuery().then(res=>{

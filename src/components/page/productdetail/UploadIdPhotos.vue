@@ -92,9 +92,14 @@ export default {
     uploadfile() {
       let IdPASide = localStorage.getItem('IdPASide')
       let IdPBSide = localStorage.getItem('IdPBSide')
-      photoUpload({ IdPASide, IdPBSide }).then(
+      let IdNo = this.$route.params.IdNo
+      let CifName = this.$route.params.CifName
+      photoUpload({ IdPASide, IdPBSide, CifName, IdNo}).then(
         res => {
-          console.log(res)
+          if(res.code == 2000 && res.result.IdPNo){
+            localStorage.setItem('IdPNo',res.result.IdPNo)
+            this.$router.push({name:'UploadSucc',params:{}})
+          }
         }
       ).catch(
         err => {
@@ -133,7 +138,10 @@ export default {
     Service,
     MyHeader
   },
-  beforeDestroy() {}
+  beforeDestroy() {
+    localStorage.setItem('IdPASide','')
+    localStorage.setItem('IdPBSide','')
+  }
 };
 </script>
 <style scoped>

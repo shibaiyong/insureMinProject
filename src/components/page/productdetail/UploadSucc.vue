@@ -22,7 +22,8 @@
           type="text"
           class="mui-input-clear addre"
           placeholder="请输入住址"
-          v-model="personinfo.addre"
+          v-model="personinfosucc.addre"
+          @focus="regionVisible=true"
         />
       </div>
       <div class="mui-input-row">
@@ -31,7 +32,7 @@
           type="text"
           class="mui-input-clear road"
           placeholder="请输入街道"
-          v-model="personinfo.road"
+          v-model="personinfosucc.road"
         />
       </div>
       <div class="mui-input-row">
@@ -40,7 +41,7 @@
           type="text"
           class="mui-input-clear company"
           placeholder="请输入公司"
-          v-model="personinfo.company"
+          v-model="personinfosucc.company"
         />
       </div>
       <div class="mui-input-row">
@@ -49,7 +50,7 @@
           type="text"
           class="mui-input-clear occupation"
           placeholder="请输入职业"
-          v-model="personinfo.Occupation"
+          v-model="personinfosucc.Occupation"
           @focus="popupVisible=true"
         />
       </div>
@@ -68,6 +69,14 @@
       </div>
       <mt-picker :slots="slots" @change="onValuesChange" value-key="Occupation"></mt-picker>
     </mt-popup>
+
+    <mt-popup v-model="regionVisible" position="bottom" :closeOnClickModal="false">
+      <div class="btn">
+        <span @click="regionVisible=false">取消</span>
+        <span @click="assignRegion">确定</span>
+      </div>
+      <mt-picker :slots="slots1" @change="onRegionChange" value-key="AddrName"></mt-picker>
+    </mt-popup>
   </div>
 </template>
 
@@ -75,7 +84,8 @@
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
 import MyHeader from "@/components/base/MyHeader"
-import { OccupationListQuery } from "@/requestDataInterface"
+import { OccupationListQuery, regionListQuery } from "@/requestDataInterface"
+import { Toast } from "mint-ui"
 
 export default {
   name: "UploadSucc",
@@ -83,9 +93,13 @@ export default {
   data() {
     this.Occupation = null
     this.OctId = null
+    // this.region = []
     return {
+      region:[],
+      province:'',
+      city:'',
       value: "",
-      personinfo: {
+      personinfosucc: {
         addre: "",
         road: "",
         company: "",
@@ -100,6 +114,7 @@ export default {
         color: "white"
       },
       popupVisible: false,
+      regionVisible:false,
 
       slots: [
         {
@@ -114,27 +129,90 @@ export default {
           className: "slot1",
           textAlign: "center"
         }
+      ],
+
+      slots1: [
+        {
+          flex: 1,
+          values: [],
+          className: 'slot1',
+          textAlign: "center"
+        },
+        {
+          divider: true,
+          content: '',
+          className: 'slot2'
+        },
+        {
+          flex: 1,
+          values: [],
+          className: 'slot3',
+          textAlign: "center"
+        }
       ]
     };
   },
   created() {},
   methods: {
     gotoSite() {
-      this.$router.push('/assessreport')
+      if(this.personinfosucc.addre == ''){
+        this.toastinstance = Toast({
+          message: '地址不能为空',
+          position: "center",
+          duration: 2000
+        })
+        return false
+      }
+      if(this.personinfosucc.road == ''){
+        this.toastinstance = Toast({
+          message: '街道不能为空',
+          position: "center",
+          duration: 2000
+        })
+        return false
+      }
+      if(this.personinfosucc.Occupation == ''){
+        this.toastinstance = Toast({
+          message: '职业不能为空',
+          position: "center",
+          duration: 2000
+        })
+        return false
+      }
+      this.$router.push('/setpassword')
     },
     onValuesChange(picker, values) {
       this.Occupation = values[0].Occupation
       this.OctId = values[0].OctId
     },
+    onRegionChange(picker, values){
+      let cityArr = []
+      
+      //console.log(values[0].AddrCode)
+      for(let i = 0; i < this.region.length; i++){
+        
+        if( this.region[i].AddrLevel==3 && this.region[i].ParentAddrCode.slice(0,2) == values[0].AddrCode){
+          cityArr.push(this.region[i])
+        }
+      }
+      //console.log(cityArr)
+      //console.log(cityArr)
+      //this.slots1[2].values = cityArr
+      picker.setSlotValues(2,cityArr)
+    },
     assignVal() {
-      this.personinfo.Occupation = this.Occupation
-      this.personinfo.OctId = this.OctId
+      this.personinfosucc.Occupation = this.Occupation
+      this.personinfosucc.OctId = this.OctId
       this.popupVisible = false
+    },
+    assignRegion(){
+      this.regionVisible = false
     },
     showPopUp() {
       this.popupVisible = true
     },
     OccupationListQuery() {
+      //查职业列表
       OccupationListQuery()
         .then(res => {
           if (res.code == 2000) {
@@ -142,8 +220,35 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
+    },
+
+    regionListQuery(){
+      //查地区列表
+      regionListQuery().then(
+        res => {
+          //console.log(res)
+          let address = res.result.List
+          let provinceArr = []
+          let cityArr = []
+          for(let i = 0; i < address.length; i++){
+            if(address[i].ParentAddrCode == "100000"){
+              provinceArr.push(address[i])
+            }
+            if(address[i].AddrCode.slice(0,2) == "11"&&address[i].AddrLevel==4){
+              cityArr.push(address[i])
+            }
+          }
+          this.region = address
+          this.slots1[0].values = provinceArr
+          this.slots1[2].values = cityArr
+        }
+      ).catch(
+        err => {
+          console.log(err)
+        }
+      )
     },
     setOccupationList(data) {
       this.slots = [
@@ -154,11 +259,16 @@ export default {
           textAlign: "center"
         }
       ]
+    },
+
+    setRegionList(data) {
+      
     }
   },
   computed: {},
   mounted() {
     this.OccupationListQuery()
+    this.regionListQuery()
   },
   components: {
     MyButton,

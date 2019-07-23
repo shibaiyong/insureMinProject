@@ -21,6 +21,7 @@ export const uploadPhoto = params => {
     
     return axiosInstance.post("/accountOpen/upload", params).then(res => res.data)
 }
+
 //照片上传开户接口
 export const photoUpload = params => {
     let postData
@@ -30,16 +31,28 @@ export const photoUpload = params => {
     return axiosInstance.post("/accountOpen/LEIdPhotoUpload", postData).then(res => res.data)
 }
 
+//职业列表查询
+export const OccupationListQuery = params => {
+    return axiosInstance.post("/accountOpen/OccupationListQry",params).then(res => res.data)
+}
+
+//省市县列表
+export const regionListQuery = params => {
+    return axiosInstance.post("/accountOpen/AddrListQry",params).then(res => res.data)
+}
+
+//获取随机数
+export const getRandom = params => {
+    return axiosInstance.post("/accountOpen/LEGenerateRand", params).then(res => res.data)
+}
+
 //借记卡信息查询
 export const DebitCardQuery = params => {
     
     return axiosInstance.post("/accountOpen/LECardBinQuery",params).then(res => res.data)
 }
 
-//职业列表查询
-export const OccupationListQuery = params => {
-    return axiosInstance.post("/accountOpen/OccupationListQry",params).then(res => res.data)
-}
+
 
 //风评题目查询
 export const RiskQuestionQuery = params => {

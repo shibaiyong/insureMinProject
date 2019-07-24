@@ -2,91 +2,15 @@
   <div class="assessreport">
     <MyHeader title="评估报告" />
 
-    <dl>
-      <dt>1、是否有不良诚信记录</dt>
+    <dl v-for="(item, index) in QuestionList" :key="item.issGuid">
+      <dt>{{ 1+index + '、' + item.issTitle }}</dt>
       <dd>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>是</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>否</label>
-          <input name="radio1" type="radio" />
-        </div>
-        
-      </dd>
-    </dl>
-
-    <dl>
-      <dt>2、您的收入来源是</dt>
-      <dd>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>工资、劳务报酬</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>生产经营所得</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>利息、股息、转让等金融性资产收入</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>出租、出售、房地产等非金融性资产收入</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>无固定收入</label>
-          <input name="radio1" type="radio" />
+        <div class="mui-input-row mui-radio mui-left" v-for="subitem in item.answerList" :key="subitem.ansGuid">
+          <label>{{subitem.ansContent}}</label>
+          <input :name="item.issGuid" type="radio" :value="subitem.ansGuid" @change="getValue(item.issGuid,subitem.ansGuid)"/>
         </div>
       </dd>
     </dl>
-    <dl>
-      <dt>3、是否优大额债务</dt>
-      <dd>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>无</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>有，住房抵押贷款等长期定额债务</label>
-          <input name="radio1" type="radio" />
-        </div>
-        
-      </dd>
-    </dl>
-
-    <dl>
-      <dt>4、是否资源购买理财？</dt>
-      <dd>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>是</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>否</label>
-          <input name="radio1" type="radio" />
-        </div>
-       
-      </dd>
-    </dl>
-
-    <dl>
-      <dt>5、基金代销机构仅接受为本人利益进行投资理财，不可代替他人进行理财</dt>
-      <dd>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>本人</label>
-          <input name="radio1" type="radio" />
-        </div>
-        <div class="mui-input-row mui-radio mui-left">
-          <label>他人</label>
-          <input name="radio1" type="radio" />
-        </div>
-       
-      </dd>
-    </dl>
-
     <div class="btncontainer">
       <MyButton :btnStyle="btnStyle" @click.native="gotoSite" content="提交"/>
     </div>
@@ -114,18 +38,42 @@ export default {
         background: "#3a65ff",
         borderRadius: "0.24rem",
         color: "white"
-      }
-    };
+      },
+      cacheArr : [],
+      QueGuid:'',
+      QuestionList:[],
+      anwserList:[],
+      PerInfoAnswer:''
+    }
   },
   created() {},
   methods: {
     gotoSite(){
-      
+      //将数组按指定分隔符转成字符串
+      let anwserStr = this.QueGuid + ':' + this.anwserList.join(',')
+      //设置交易密码页面获取答案
+      this.$store.dispatch('storeAnswer',anwserStr)
+      localStorage.setItem('PerInfoAnswer',anwserStr)
+      this.$router.push('/setpassword')
     },
     RiskQuestionQuery(){
       RiskQuestionQuery().then(res => {
+
         console.log(res)
+        if(res.code == 2000 && res.result.List){
+          this.QuestionList = res.result.List
+          this.QueGuid = res.result.QueGuid
+        }
       }).catch(err => {console.log( err )})
+    },
+    getValue( issGuid, ansGuid ){
+      let index = this.cacheArr.indexOf(issGuid)
+      if(index > -1){
+        this.anwserList.splice(index,1,issGuid + '|' + ansGuid)
+        return false
+      }
+      this.cacheArr.push(issGuid)
+      this.anwserList.push(issGuid + '|' + ansGuid)
     }
   },
   mounted() {

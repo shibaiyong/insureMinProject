@@ -32,7 +32,7 @@
           type="text"
           class="mui-input-clear road"
           placeholder="请输入街道"
-          v-model="personinfosucc.road"
+          v-model="personinfosucc.Street"
         />
       </div>
       <div class="mui-input-row">
@@ -41,7 +41,7 @@
           type="text"
           class="mui-input-clear company"
           placeholder="请输入公司"
-          v-model="personinfosucc.company"
+          v-model="personinfosucc.Company"
         />
       </div>
       <div class="mui-input-row">
@@ -62,7 +62,7 @@
     <div class="service">
       <Service />
     </div>
-    <mt-popup v-model="popupVisible" position="bottom" :closeOnClickModal="false">
+    <mt-popup v-model="popupVisible" position="bottom" :closeOnClickModal="false" :key="1">
       <div class="btn">
         <span @click="popupVisible=false">取消</span>
         <span @click="assignVal">确定</span>
@@ -70,7 +70,7 @@
       <mt-picker :slots="slots" @change="onValuesChange" value-key="Occupation"></mt-picker>
     </mt-popup>
 
-    <mt-popup v-model="regionVisible" position="bottom" :closeOnClickModal="false">
+    <mt-popup v-model="regionVisible" position="bottom" :closeOnClickModal="false" :key="2">
       <div class="btn">
         <span @click="regionVisible=false">取消</span>
         <span @click="assignRegion">确定</span>
@@ -81,30 +81,34 @@
 </template>
 
 <script>
-import Service from "@/components/base/Service.vue"
-import MyButton from "@/components/base/MyButton"
-import MyHeader from "@/components/base/MyHeader"
-import { OccupationListQuery, regionListQuery } from "@/requestDataInterface"
-import { Toast } from "mint-ui"
+import Service from "@/components/base/Service.vue";
+import MyButton from "@/components/base/MyButton";
+import MyHeader from "@/components/base/MyHeader";
+import { OccupationListQuery, regionListQuery } from "@/requestDataInterface";
+import { Toast } from "mint-ui";
 
 export default {
   name: "UploadSucc",
   props: {},
   data() {
-    this.Occupation = null
-    this.OctId = null
-    // this.region = []
+    this.Occupation = null;
+    this.OctId = null;
+
     return {
-      region:[],
-      province:'',
-      city:'',
+      region: [],
+      province: "",
+      city: "",
       value: "",
       personinfosucc: {
         addre: "",
-        road: "",
-        company: "",
+        Street: "",
+        Company: "",
         Occupation: "",
-        OctId:""
+        OctId: "",
+        provenceId: "",
+        cityId: "",
+        provencename: "",
+        cityname: ""
       },
       btnStyle: {
         width: "100%",
@@ -114,7 +118,7 @@ export default {
         color: "white"
       },
       popupVisible: false,
-      regionVisible:false,
+      regionVisible: false,
 
       slots: [
         {
@@ -135,18 +139,31 @@ export default {
         {
           flex: 1,
           values: [],
-          className: 'slot1',
+          className: "slot1",
           textAlign: "center"
         },
         {
           divider: true,
-          content: '',
-          className: 'slot2'
+          content: "",
+          className: "slot2"
         },
         {
           flex: 1,
           values: [],
-          className: 'slot3',
+          defaultIndex: 1,
+          className: "slot3",
+          textAlign: "center"
+        },
+        {
+          divider: true,
+          content: "",
+          className: "slot4"
+        },
+        {
+          flex: 1,
+          values: [],
+          defaultIndex: 1,
+          className: "slot5",
           textAlign: "center"
         }
       ]
@@ -155,100 +172,153 @@ export default {
   created() {},
   methods: {
     gotoSite() {
-      if(this.personinfosucc.addre == ''){
+      if (this.personinfosucc.addre == "") {
         this.toastinstance = Toast({
-          message: '地址不能为空',
+          message: "地址不能为空",
           position: "center",
           duration: 2000
-        })
-        return false
+        });
+        return false;
       }
-      if(this.personinfosucc.road == ''){
+      if (this.personinfosucc.Street == "") {
         this.toastinstance = Toast({
-          message: '街道不能为空',
+          message: "街道不能为空",
           position: "center",
           duration: 2000
-        })
-        return false
+        });
+        return false;
       }
-      if(this.personinfosucc.Occupation == ''){
+      if (this.personinfosucc.Occupation == "") {
         this.toastinstance = Toast({
-          message: '职业不能为空',
+          message: "职业不能为空",
           position: "center",
           duration: 2000
-        })
-        return false
+        });
+        return false;
       }
-      this.$router.push('/setpassword')
+
+      localStorage.setItem(
+        "personinfosucc",
+        JSON.stringify(this.personinfosucc)
+      );
+      this.$router.push("/assessreport");
     },
     onValuesChange(picker, values) {
-      this.Occupation = values[0].Occupation
-      this.OctId = values[0].OctId
+      this.Occupation = values[0].Occupation;
+      this.OctId = values[0].OctId;
     },
-    onRegionChange(picker, values){
-      let cityArr = []
-      
-      //console.log(values[0].AddrCode)
-      for(let i = 0; i < this.region.length; i++){
-        
-        if( this.region[i].AddrLevel==3 && this.region[i].ParentAddrCode.slice(0,2) == values[0].AddrCode){
-          cityArr.push(this.region[i])
+    onRegionChange(picker, values) {
+      let cityArr = [];
+      let countryArr = [];
+      let cacheRegion = JSON.parse(localStorage.getItem("region"));
+      if (this.personinfosucc.cityId != values[1].AddrCode) {
+        for (let i = 0; i < cacheRegion.length; i++) {
+          if (
+            cacheRegion[i].AddrLevel == 4 &&
+            cacheRegion[i].ParentAddrCode==
+              values[1].AddrCode
+          ) {
+            countryArr.push(cacheRegion[i])
+          }
+          picker.setSlotValues(2, countryArr)
         }
       }
-      //console.log(cityArr)
-      //console.log(cityArr)
-      //this.slots1[2].values = cityArr
-      picker.setSlotValues(2,cityArr)
+
+      if (this.personinfosucc.provenceId != values[0].AddrCode) {
+        for (let i = 0; i < cacheRegion.length; i++) {
+          if (
+            cacheRegion[i].AddrLevel == 3 &&
+            cacheRegion[i].ParentAddrCode.slice(0, 2) == values[0].AddrCode
+          ) {
+            cityArr.push(cacheRegion[i]);
+          }
+        }
+        picker.setSlotValues(1, cityArr);
+      }
+
+      this.personinfosucc.provenceId = values[0].AddrCode
+      this.personinfosucc.cityId = values[1].AddrCode
+      this.personinfosucc.provencename = values[0].AddrName
+      this.personinfosucc.cityname = values[1].AddrName
+      
     },
     assignVal() {
-      this.personinfosucc.Occupation = this.Occupation
-      this.personinfosucc.OctId = this.OctId
-      this.popupVisible = false
+      this.personinfosucc.Occupation = this.Occupation;
+      this.personinfosucc.OctId = this.OctId;
+      this.popupVisible = false;
     },
-    assignRegion(){
-      this.regionVisible = false
+    assignRegion() {
+      this.regionVisible = false;
+      this.personinfosucc.addre =
+      this.personinfosucc.provencename + this.personinfosucc.cityname;
     },
     showPopUp() {
-      this.popupVisible = true
+      this.popupVisible = true;
     },
     OccupationListQuery() {
       //查职业列表
       OccupationListQuery()
         .then(res => {
           if (res.code == 2000) {
-            this.setOccupationList(res.result.List)
+            this.setOccupationList(res.result.List);
           }
         })
         .catch(err => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
 
-    regionListQuery(){
+    regionListQuery() {
       //查地区列表
-      regionListQuery().then(
-        res => {
-          //console.log(res)
-          let address = res.result.List
-          let provinceArr = []
-          let cityArr = []
-          for(let i = 0; i < address.length; i++){
-            if(address[i].ParentAddrCode == "100000"){
-              provinceArr.push(address[i])
-            }
-            if(address[i].AddrCode.slice(0,2) == "11"&&address[i].AddrLevel==4){
-              cityArr.push(address[i])
-            }
-          }
-          this.region = address
-          this.slots1[0].values = provinceArr
-          this.slots1[2].values = cityArr
+      let address = JSON.parse(localStorage.getItem("region"));
+      // regionListQuery().then(
+      //   res => {
+      //let address = res.result.List
+
+      let provinceArr = [];
+      let cityArr = [];
+      // for(let i = 0; i < address.length; i++){
+      //   if(address[i].ParentAddrCode == "100000"){
+      //     provinceArr.push(address[i])
+      //   }
+      //   if(address[i].AddrName=='市辖区'){
+      //     address.splice(i,1)
+      //   }
+      //   if(address[i].AddrCode.slice(0,2) == "11"&&address[i].AddrLevel==4){
+      //     address[i].AddrLevel = 3
+      //     cityArr.push(address[i])
+      //   }
+      //   else if(address[i].AddrCode.slice(0,2) == "12"&&address[i].AddrLevel==4){
+      //     address[i].AddrLevel = 3
+      //   }
+      //   else if(address[i].AddrCode.slice(0,2) == "31"&&address[i].AddrLevel==4){
+      //     address[i].AddrLevel = 3
+      //   }
+      //   else if(address[i].AddrCode.slice(0,2) == "50"&&address[i].AddrLevel==4){
+      //     address[i].AddrLevel = 3
+      //   }
+      // }
+      for (let i = 0; i < address.length; i++) {
+        if (address[i].ParentAddrCode == "100000") {
+          provinceArr.push(address[i]);
         }
-      ).catch(
-        err => {
-          console.log(err)
+        if (address[i].AddrName == "市辖区") {
+          address.splice(i, 1);
         }
-      )
+        if (address[i].AddrCode.slice(0, 2) == "11") {
+          address[i].AddrLevel = 3;
+          cityArr.push(address[i]);
+        }
+      }
+      //localStorage.setItem('region',JSON.stringify(address))
+      this.slots1[0].values = provinceArr;
+      this.slots1[2].values = cityArr;
+      //   }
+      // ).catch(
+      //   err => {
+      //     console.log(err)
+      //   }
+      // )
     },
     setOccupationList(data) {
       this.slots = [
@@ -258,17 +328,15 @@ export default {
           className: "slot1",
           textAlign: "center"
         }
-      ]
+      ];
     },
 
-    setRegionList(data) {
-      
-    }
+    setRegionList(data) {}
   },
   computed: {},
   mounted() {
-    this.OccupationListQuery()
-    this.regionListQuery()
+    this.OccupationListQuery();
+    this.regionListQuery();
   },
   components: {
     MyButton,

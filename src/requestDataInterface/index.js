@@ -41,10 +41,41 @@ export const regionListQuery = params => {
     return axiosInstance.post("/accountOpen/AddrListQry",params).then(res => res.data)
 }
 
+
+//个人信息补充问题查询
+
+export const RiskQuestionQuery = params => {
+    return axiosInstance.post("/accountOpen/QryCustRiskPerInfoQuestion",params).then(res => res.data)
+}
+
 //获取随机数
 export const getRandom = params => {
-    return axiosInstance.post("/accountOpen/LEGenerateRand", params).then(res => res.data)
+    let postData
+    if(params){
+        postData = qs.stringify( params )
+    }
+    return axiosInstance.post("/accountOpen/LEGenerateRand", postData).then(res => res.data)
 }
+
+//获取验证码
+
+export const getPhoneCode = params => {
+    let postData
+    if(params){
+        postData = qs.stringify( params )
+    }
+    return axiosInstance.post("/accountOpen/LEGetPhoneCode", postData).then(res => res.data)
+}
+
+//开户
+export const accountOpen = params => {
+    let postData
+    if(params){
+        postData = qs.stringify( params )
+    }
+    return axiosInstance.post("/accountOpen/accountOpen", postData).then(res => res.data)
+}
+
 
 //借记卡信息查询
 export const DebitCardQuery = params => {
@@ -52,12 +83,6 @@ export const DebitCardQuery = params => {
     return axiosInstance.post("/accountOpen/LECardBinQuery",params).then(res => res.data)
 }
 
-
-
-//风评题目查询
-export const RiskQuestionQuery = params => {
-    return axiosInstance.post("/accountOpen/RiskQuestionQry",params).then(res => res.data)
-}
 
 
 

@@ -10,7 +10,6 @@
           id="SIPBox1"
           class="mui-input-password"
           @focus="showKeyBoard('SIPBox1')"
-          @blur="hideKeyBoard('SIPBox1')"
           placeholder="请输入交易密码"
           readonly
         />
@@ -22,11 +21,15 @@
           id="SIPBox2"
           class="mui-input-password"
           @focus="showKeyBoard('SIPBox2')"
-          @blur="hideKeyBoard('SIPBox2')"
           placeholder="请再次输入交易密码"
           readonly
         />
       </div>
+      <div class="mui-input-row">
+        <label>验证码</label>
+          <input type="text" class="mui-input-clear messagecode" placeholder="请输入短信验证码" v-model="passwords.MessageCode"/>
+          <span id="messagecode" @click="getPhoneCode">获取验证码</span>
+        </div>
     </div>
     <div class="tip">
       <span>注意:</span>
@@ -42,10 +45,12 @@
 </template>
 
 <script>
-import MyHeader from "@/components/base/MyHeader.vue";
-import MyButton from "@/components/base/MyButton";
-import Service from "@/components/base/Service.vue";
-import { Toast } from "mint-ui";
+import MyHeader from "@/components/base/MyHeader.vue"
+import MyButton from "@/components/base/MyButton"
+import Service from "@/components/base/Service.vue"
+import { getRandom, accountOpen, getPhoneCode } from "@/requestDataInterface"
+import { mapState } from "vuex"
+import { Toast } from "mint-ui"
 export default {
   name: "SetPassword",
   props: {},
@@ -54,13 +59,17 @@ export default {
       "30818702818100B9800F6965ECCDD3621E2DF1974FEDF8B8BFCD5ECF58155DCB279CAA8F8838480B6DFC973752CC678C2A291A799927C08CCD7CB31218DB8B3A5A675C4E83B997F7D0479C3692DD53D52B52C61ECEE4708B1C0F2199001DD298A52BBF5750EDED9F03CA05B19E295D84CFB1798E084458E972A506F6629C4B22509713B9C72F5F020103";
     this.RSA_PUBLIC_KEY_SIG =
       "0821AFBC831EA062B9BEC0F0D10EAC5CB53FF6D608DFF1783C24BB6A6A1E650EA6F98ED29DEAC94D436A122AB40514A6985E4130C2115562A9DE0896F612E85ACB9DA5CB49A30BF2653E9CA542BE4B287B5EB37CBD97B045ECD1621E90E542FBA8F394CDA8E752F7AE0F2C83F589F46B3F2121F4D010090FB898514DCB8A5F90";
-    this.Random = "0123456789012345";
+    
     this.keyboard = {
       SIPBox1: null,
       SIPBox2: null
     };
     this.toastinstance = null;
     return {
+      Random :"0123456789012345",
+      RandJnlNo:'',
+      MobilePhone:'',
+      
       btnStyle: {
         width: "100%",
         height: "0.4rem",
@@ -80,6 +89,12 @@ export default {
           min: 6,
           max: 6
         }
+      },
+      passwords:{
+        PwdResult:'',
+        PwdResultConfirm:'',
+        MessageCode:'',
+        MessageTaskId:''
       }
     };
   },
@@ -89,7 +104,38 @@ export default {
       if (!this.checkPwd("SIPBox1")) {
         return;
       }
-      console.log("提交数据");
+
+      this.accountOpen()
+      console.log("提交数据")
+    },
+    getPhoneCode(){
+
+      let TemplateId = 'C01'
+      let personinfo = JSON.parse(localStorage.getItem('personinfo'))
+
+      getPhoneCode({TemplateId, MobilePhone:personinfo.MobilePhone}).then(
+        res => {
+          this.passwords.MessageTaskId = res.result.MessageTaskId
+        }
+      ).catch(
+        err => {
+          console.log(err)
+        }
+      )
+
+    },
+    getRandom(){
+      
+      getRandom({RandType:'1'}).then(res => {
+        this.Random = res.result.Random
+        this.RandJnlNo = res.result.RandJnlNo
+        this.addKeyBoard("SIPBox1")
+        this.addKeyBoard("SIPBox2")
+      }).catch(
+        err => {
+          console.log(err)
+        }
+      )
     },
     showKeyBoard(inputname) {
       this.keyboard[inputname].showKeyboard();
@@ -98,12 +144,13 @@ export default {
       this.keyboard[inputname].hideKeyboard();
     },
     addKeyBoard(inputname) {
-      this.keyboard[inputname].bindInputBox(inputname);
+      this.keyboard[inputname].bindInputBox(inputname)
+      console.log(this.Random)
       if (
         CFCA_OK !=
         this.keyboard[inputname].setServerRandom(this.Random, inputname)
       ) {
-        alert("SetServerRandom error");
+        alert("SetServerRandom error")
       }
       if (
         CFCA_OK !=
@@ -113,14 +160,14 @@ export default {
           inputname
         )
       ) {
-        alert("SetPublicKey error");
+        alert("SetPublicKey error")
       }
     },
     initKeyBoard() {
-      this.keyboard.SIPBox1 = new CFCAKeyboard("NumberKeyboard1", 1);
-      this.keyboard.SIPBox2 = new CFCAKeyboard("NumberKeyboard2", 1);
-      this.keyboard.SIPBox1.hideKeyboard();
-      this.keyboard.SIPBox2.hideKeyboard();
+      this.keyboard.SIPBox1 = new CFCAKeyboard("NumberKeyboard1", 1)
+      this.keyboard.SIPBox2 = new CFCAKeyboard("NumberKeyboard2", 1)
+      this.keyboard.SIPBox1.hideKeyboard()
+      this.keyboard.SIPBox2.hideKeyboard()
     },
     checkPwd(inputname) {
       let t = new CFCAKeyboard.Range(this.rule.t.min, this.rule.t.max);
@@ -141,12 +188,16 @@ export default {
           });
           return false;
         } else {
-          this.toastinstance = Toast({
-            message: encryptedInputValue,
-            position: "center",
-            duration: 2000
-          });
-          return true;
+
+          this.passwords.PwdResult = encryptedInputValue
+          this.passwords.PwdResultConfirm = encryptedInputValue
+
+          // this.toastinstance = Toast({
+          //   message: encryptedInputValue,
+          //   position: "center",
+          //   duration: 2000
+          // })
+          return true
         }
       } else {
         this.toastinstance = Toast({
@@ -156,13 +207,47 @@ export default {
         });
         return false;
       }
+    },
+    accountOpen(){
+      //17014327360
+      let IdPNo = localStorage.getItem('IdPNo')
+      let personinfo = JSON.parse(localStorage.getItem('personinfo'))
+      let personinfosucc = JSON.parse(localStorage.getItem('personinfosucc'))
+      //personinfosucc.Occupation = personinfosucc.OctId
+      personinfosucc.Occupation = '23'
+      let PerInfoAnswer = localStorage.getItem('PerInfoAnswer')
+      let params = Object.assign({},personinfo,personinfosucc,this.passwords,{
+        IdPNo,
+        PerInfoAnswer,
+        RandJnlNo:this.RandJnlNo,
+        Random:this.Random
+
+      })
+
+
+      
+
+      console.log(params)
+      
+
+      accountOpen( params ).then(
+        res => {
+          console.log(res)
+        }
+      ).catch(
+        err => {
+          console.log(err)
+        }
+      )
     }
   },
-  computed: {},
+  computed: {
+    ...mapState(["PerInfoAnswer"])
+  },
   mounted() {
-    this.initKeyBoard();
-    this.addKeyBoard("SIPBox1");
-    this.addKeyBoard("SIPBox2");
+    this.getRandom()
+    this.initKeyBoard()
+    
   },
   components: {
     MyHeader,
@@ -203,5 +288,21 @@ h3 {
 .complete {
   padding: 0 0.16rem;
   margin-top: 0.3rem;
+}
+
+#messagecode {
+  display: inline-block;
+  width: 0.96rem;
+  height: 0.25rem;
+  background: white;
+  position: absolute;
+  border: 1px solid #3d48e3;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 0.25rem;
+  color: #3d48e3;
+  top: 7px;
+  right: 4px;
+  font-size: 0.14rem;
 }
 </style>

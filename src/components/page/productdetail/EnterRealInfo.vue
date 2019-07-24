@@ -11,26 +11,23 @@
     <div class="memeberregister">
       <div class="bankitem memeberinfo">
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear agentnumber" placeholder="请输入真实姓名" v-model="personinfo.realname"/>
+          <input type="text" class="mui-input-clear agentnumber" placeholder="请输入真实姓名" v-model="personinfo.CifName"/>
         </div>
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear realname" placeholder="请输入身份证号码" v-model="personinfo.idcardnum"/>
+          <input type="text" class="mui-input-clear realname" placeholder="请输入身份证号码" v-model="personinfo.IdNo"/>
         </div>
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" @blur="queryBank" v-model="personinfo.bankcardnum"/>
+          <input type="text" class="mui-input-clear mobile" placeholder="请输入本人银行卡号码" @blur="queryBank" v-model="personinfo.TAcNo"/>
           <span id="verifycode">
             <img src="@/assets/img/chinabank.png" />
           </span>
         </div>
 
         <div class="mui-input-row">
-          <input type="text" class="mui-input-clear idcard" placeholder="请输入银行预留手机号" v-model="personinfo.mobile"/>
+          <input type="text" class="mui-input-clear idcard" placeholder="请输入银行预留手机号" v-model="personinfo.MobilePhone"/>
         </div>
 
-        <div class="mui-input-row">
-          <input type="text" class="mui-input-clear messagecode" placeholder="请输入短信验证码" v-model="personinfo.messagecode"/>
-          <span id="messagecode">获取验证码</span>
-        </div>
+        
       </div>
 
       <div class="agreee">
@@ -75,11 +72,12 @@ export default {
       selected: true,
       toastinstance:null,
       personinfo:{
-        realname:'',
-        idcardnum:'',
-        bankcardnum:'',
-        mobile:'',
-        messagecode:''
+        CifName:'',
+        IdNo:'',
+        TAcNo:'',
+        MobilePhone:'',
+        IsAgreeProtocol:true,
+        MessageCode:''
 
       }
     };
@@ -93,7 +91,7 @@ export default {
       //存储实名制信息，在开户页面获取，一并提交
       localStorage.setItem('personinfo',JSON.stringify(this.personinfo))
       //上传身份证照片，需要的两个字段值
-      this.$router.push({name:'UploadIdPhotos', params:{ CifName:this.personinfo.realname, IdNo:this.personinfo.idcardnum}})
+      this.$router.push({name:'UploadIdPhotos', params:{ CifName:this.personinfo.CifName, IdNo:this.personinfo.IdNo}})
     },
     queryBank(){
       DebitCardQuery().then(res=>{

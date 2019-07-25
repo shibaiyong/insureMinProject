@@ -28,7 +28,8 @@
       <div class="mui-input-row">
         <label>验证码</label>
           <input type="text" class="mui-input-clear messagecode" placeholder="请输入短信验证码" v-model="passwords.MessageCode"/>
-          <span id="messagecode" @click="getPhoneCode">获取验证码</span>
+          <span id="messagecode" v-if="ifFetchCode" @click="getPhoneCode">获取验证码</span>
+          <span id="countdown" v-else>{{'剩余' + numberStart + 's'}}</span>
         </div>
     </div>
     <div class="tip">
@@ -63,17 +64,19 @@ export default {
     this.keyboard = {
       SIPBox1: null,
       SIPBox2: null
-    };
-    this.toastinstance = null;
+    }
+    this.toastinstance = null
+    this.setIntervalCache = null
     return {
       Random :"0123456789012345",
       RandJnlNo:'',
       MobilePhone:'',
-      
+      ifFetchCode:true,
+      numberEnd:0,
+      numberStart:120,
       btnStyle: {
         width: "100%",
         height: "0.4rem",
-        //background: "#ddd",
         background: "#3965ff", //输入状态根据短息验证码是否获取到
         borderRadius: "0.2rem",
         color: "white"
@@ -102,30 +105,31 @@ export default {
   methods: {
     submitData() {
       if (!this.checkPwd("SIPBox1")) {
-        return;
+        return
       }
-
       this.accountOpen()
-      console.log("提交数据")
     },
     getPhoneCode(){
-
+      this.ifFetchCode = false
+      //启动倒计时
+      this.changeNumber(1000,120000)
       let TemplateId = 'C01'
       let personinfo = JSON.parse(localStorage.getItem('personinfo'))
-
       getPhoneCode({TemplateId, MobilePhone:personinfo.MobilePhone}).then(
         res => {
           this.passwords.MessageTaskId = res.result.MessageTaskId
+          //清除倒计时
+          clearInterval(this.setIntervalCache)
         }
       ).catch(
         err => {
+          //清除倒计时
+          clearInterval(this.setIntervalCache)
           console.log(err)
         }
       )
-
     },
     getRandom(){
-      
       getRandom({RandType:'1'}).then(res => {
         this.Random = res.result.Random
         this.RandJnlNo = res.result.RandJnlNo
@@ -138,14 +142,27 @@ export default {
       )
     },
     showKeyBoard(inputname) {
-      this.keyboard[inputname].showKeyboard();
+      this.hideAllKeyBoard().then(
+        res => {
+          this.keyboard[inputname].showKeyboard()
+        }
+      )
     },
-    hideKeyBoard(inputname) {
-      this.keyboard[inputname].hideKeyboard();
+    hideAllKeyBoard(inputname) {
+      return new Promise( (resolve,reject) => {
+        try{
+          let keyboards = Object.values(this.keyboard)
+          for(let item of keyboards){
+            item.hideKeyboard()
+          }
+          resolve('success')
+        }catch(err){
+          reject(err)
+        }
+      })
     },
     addKeyBoard(inputname) {
       this.keyboard[inputname].bindInputBox(inputname)
-      console.log(this.Random)
       if (
         CFCA_OK !=
         this.keyboard[inputname].setServerRandom(this.Random, inputname)
@@ -210,6 +227,11 @@ export default {
     },
     accountOpen(){
       //17014327360
+      //签约如意宝的时候使用这三个参数
+      localStorage.setItem('RandJnlNo', this.RandJnlNo)
+      localStorage.setItem('Random', this.Random)
+      localStorage.setItem('PwdResult', this.passwords.PwdResult)
+
       let IdPNo = localStorage.getItem('IdPNo')
       let personinfo = JSON.parse(localStorage.getItem('personinfo'))
       let personinfosucc = JSON.parse(localStorage.getItem('personinfosucc'))
@@ -221,15 +243,8 @@ export default {
         PerInfoAnswer,
         RandJnlNo:this.RandJnlNo,
         Random:this.Random
-
       })
-
-
-      
-
       console.log(params)
-      
-
       accountOpen( params ).then(
         res => {
           console.log(res)
@@ -239,6 +254,25 @@ export default {
           console.log(err)
         }
       )
+    },
+    changeNumber(keepTime, cycleTime) {
+      //数字滚动叠加
+
+      let span = this.numberEnd - this.numberStart
+      let translateTime = cycleTime
+      let changeTime = Math.ceil(translateTime / keepTime)
+      let step = Math.ceil(span / changeTime)
+      this.setIntervalCache = setInterval(() => {
+        this.numberStart = this.numberStart + step
+        if (this.numberStart >= this.numberEnd && span >= 0) {
+          clearInterval(changeNumberInterval)
+          this.numberStart = this.numberEnd
+        } else if (this.numberStart <= this.numberEnd && span < 0) {
+          clearInterval(changeNumberInterval)
+          this.numberStart = this.numberEnd
+          this.ifFetchCode = true
+        }
+      }, keepTime)
     }
   },
   computed: {
@@ -303,6 +337,20 @@ h3 {
   color: #3d48e3;
   top: 7px;
   right: 4px;
+  font-size: 0.14rem;
+}
+
+#countdown{
+display: inline-block;
+  width: 0.96rem;
+  height: 0.25rem;
+  background: white;
+  position: absolute;
+  text-align: center;
+  line-height: 0.25rem;
+  color: #3d48e3;
+  top: 6px;
+  right: 6px;
   font-size: 0.14rem;
 }
 </style>

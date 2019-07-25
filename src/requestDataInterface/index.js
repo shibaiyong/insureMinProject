@@ -48,6 +48,26 @@ export const RiskQuestionQuery = params => {
     return axiosInstance.post("/accountOpen/QryCustRiskPerInfoQuestion",params).then(res => res.data)
 }
 
+//风评信息查询
+
+export const RiskQuestionQry = params => {
+    return axiosInstance.post("/accountOpen/RiskQuestionQry",params).then(res => res.data)
+}
+
+//提交风评答案
+export const RiskResultCommit = params => {
+
+    return axiosInstance.post("/accountOpen/RiskResultCommit",qs.stringify( params )).then(res => res.data)
+}
+
+//开户签约如意宝风评答案提交(预风评)
+
+export const RiskForOpenCommit = params => {
+
+    return axiosInstance.post("/accountOpen/RiskForOpenCommit",qs.stringify( params )).then(res => res.data)
+}
+
+
 //获取随机数
 export const getRandom = params => {
     let postData
@@ -76,11 +96,15 @@ export const accountOpen = params => {
     return axiosInstance.post("/accountOpen/accountOpen", postData).then(res => res.data)
 }
 
-
 //借记卡信息查询
 export const DebitCardQuery = params => {
-    
-    return axiosInstance.post("/accountOpen/LECardBinQuery",params).then(res => res.data)
+    return axiosInstance.post("/accountOpen/LECardBinQuery",qs.stringify( params )).then(res => res.data)
+}
+
+//签约如意宝
+
+export const LERybOpenAccount = params => {
+    return axiosInstance.post("/accountOpen/LERybOpenAccount",qs.stringify( params )).then(res => res.data)
 }
 
 

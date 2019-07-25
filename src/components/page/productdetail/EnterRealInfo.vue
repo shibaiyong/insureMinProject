@@ -94,7 +94,8 @@ export default {
       this.$router.push({name:'UploadIdPhotos', params:{ CifName:this.personinfo.CifName, IdNo:this.personinfo.IdNo}})
     },
     queryBank(){
-      DebitCardQuery().then(res=>{
+      let TAcNo = this.personinfo.TAcNo
+      DebitCardQuery({ TAcNo }).then(res=>{
         console.log(res)
       }).catch(err=>{console.log(err)})
     }

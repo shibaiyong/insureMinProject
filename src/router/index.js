@@ -24,11 +24,14 @@ const EnterRealInfo = r => require.ensure([], () => r(require('@/components/page
 const BankList = r => require.ensure([], () => r(require('@/components/page/productdetail/BankList')), 'BankList')
 const UploadSucc = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadSucc')), 'UploadSucc')
 const UploadIdPhotos = r => require.ensure([], () => r(require('@/components/page/productdetail/UploadIdPhotos')), 'UploadIdPhotos')
+const ExtraQuestion = r => require.ensure([], () => r(require('@/components/page/productdetail/ExtraQuestion')), 'ExtraQuestion')
 const AssessReport = r => require.ensure([], () => r(require('@/components/page/productdetail/AssessReport')), 'AssessReport')
+
 //const EnterVerfiCode = r => require.ensure([], () => r(require('@/components/page/productdetail/EnterVerfiCode')), 'EnterVerfiCode')
 
 const Buy = r => require.ensure([], () => r(require('@/components/page/buy/Buy')), 'Buy')
 
+const EnterPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/enterpassword')), 'EnterPassword')
 const SetPassword = r => require.ensure([], () => r(require('@/components/page/setpassword/SetPassword')), 'SetPassword')
 const WithdrawCash = r => require.ensure([], () => r(require('@/components/page/personalcenter/WithdrawCash')), 'WithdrawCash')
 const ModifyMobile = r => require.ensure([], () => r(require('@/components/page/set/modifymobile/ModifyMobile')), 'ModifyMobile')
@@ -100,6 +103,17 @@ const instance = new Router({
         roles: ['superadmin']
       }
     },
+    
+    {
+      path: '/enterpassword',
+      name: 'EnterPassword',
+      component: EnterPassword,
+      meta: {
+        title: 'EnterPassword',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
     {
       path: '/setpassword',
       name: 'SetPassword',
@@ -152,6 +166,17 @@ const instance = new Router({
     },
 
     
+    {
+      path: '/extraquestion',
+      name: 'ExtraQuestion',
+      component: ExtraQuestion,
+      meta: {
+        title: 'ExtraQuestion',
+        requireAuth: true,
+        roles: ['superadmin']
+      }
+    },
+
     {
       path: '/assessreport',
       name: 'AssessReport',

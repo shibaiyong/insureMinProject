@@ -106,7 +106,7 @@ export default {
         Occupation: "",
         OctId: "",
         provenceId: "",
-        cityId: "",
+        DistrictCode: "",
         provencename: "",
         cityname: ""
       },
@@ -201,11 +201,13 @@ export default {
         "personinfosucc",
         JSON.stringify(this.personinfosucc)
       );
-      this.$router.push("/assessreport");
+      //this.$router.push("/extraquestion")
+      this.$router.push("/assessreport")
+      
     },
     onValuesChange(picker, values) {
-      this.Occupation = values[0].Occupation;
-      this.OctId = values[0].OctId;
+      this.Occupation = values[0].Occupation
+      this.OctId = values[0].OctId
     },
     onRegionChange(picker, values) {
       let cityArr = [];
@@ -237,18 +239,18 @@ export default {
       }
 
       this.personinfosucc.provenceId = values[0].AddrCode
-      this.personinfosucc.cityId = values[1].AddrCode
+      this.personinfosucc.DistrictCode = values[1].AddrCode
       this.personinfosucc.provencename = values[0].AddrName
       this.personinfosucc.cityname = values[1].AddrName
       
     },
     assignVal() {
-      this.personinfosucc.Occupation = this.Occupation;
-      this.personinfosucc.OctId = this.OctId;
+      this.personinfosucc.Occupation = this.Occupation
+      this.personinfosucc.OctId = this.OctId
       this.popupVisible = false;
     },
     assignRegion() {
-      this.regionVisible = false;
+      this.regionVisible = false
       this.personinfosucc.addre =
       this.personinfosucc.provencename + this.personinfosucc.cityname;
     },

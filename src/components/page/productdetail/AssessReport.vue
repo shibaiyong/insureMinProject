@@ -1,20 +1,18 @@
 <template>
   <div class="assessreport">
     <MyHeader title="评估报告" />
-
-    <dl v-for="(item, index) in QuestionList" :key="item.issGuid">
-      <dt>{{ 1+index + '、' + item.issTitle }}</dt>
+    <dl v-for="(item, index) in QuestionList" :key="item.Question">
+      <dt>{{ item.Question }}</dt>
       <dd>
-        <div class="mui-input-row mui-radio mui-left" v-for="subitem in item.answerList" :key="subitem.ansGuid">
-          <label>{{subitem.ansContent}}</label>
-          <input :name="item.issGuid" type="radio" :value="subitem.ansGuid" @change="getValue(item.issGuid,subitem.ansGuid)"/>
+        <div class="mui-input-row mui-radio mui-left" v-for="subitem in item.AnswersList" :key="subitem.ansGuid">
+          <label>{{subitem.AnswerContent}}</label>
+          <input :name="item.Question" type="radio" @change="getValue(index+1,subitem.Selection)"/>
         </div>
       </dd>
     </dl>
     <div class="btncontainer">
-      <MyButton :btnStyle="btnStyle" @click.native="gotoSite" content="提交"/>
+      <MyButton :btnStyle="btnStyle" @click.native="gotoSite" content="提交" />
     </div>
-
     <div class="service">
       <Service />
     </div>
@@ -25,7 +23,7 @@
 import MyHeader from "@/components/base/MyHeader.vue"
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
-import { RiskQuestionQuery } from "@/requestDataInterface"
+import { RiskQuestionQry, RiskResultCommit, LERybOpenAccount, RiskForOpenCommit } from "@/requestDataInterface"
 
 export default {
   name: "AssessReport",
@@ -39,45 +37,77 @@ export default {
         borderRadius: "0.24rem",
         color: "white"
       },
-      cacheArr : [],
-      QueGuid:'',
-      QuestionList:[],
-      anwserList:[],
-      PerInfoAnswer:''
-    }
+      cacheArr: [],
+      QueGuid: "",
+      QuestionList: [],
+      anwserList: [],
+      PerInfoAnswer: ""
+    };
   },
   created() {},
   methods: {
-    gotoSite(){
-      //将数组按指定分隔符转成字符串
-      let anwserStr = this.QueGuid + ':' + this.anwserList.join(',')
-      //设置交易密码页面获取答案
-      this.$store.dispatch('storeAnswer',anwserStr)
-      localStorage.setItem('PerInfoAnswer',anwserStr)
-      this.$router.push('/setpassword')
+    gotoSite() {
+      
+      this.RiskResultCommit()
     },
-    RiskQuestionQuery(){
-      RiskQuestionQuery().then(res => {
+    RiskQuestionQry() {
+      RiskQuestionQry()
+        .then(res => {
+          console.log(res)
+          if (res.code == 2000 && res.result.QuestionsList) {
+            this.QuestionList = res.result.QuestionsList
+            console.log(this.QuestionList)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        });
+    },
+    RiskResultCommit(){
 
-        console.log(res)
-        if(res.code == 2000 && res.result.List){
-          this.QuestionList = res.result.List
-          this.QueGuid = res.result.QueGuid
-        }
-      }).catch(err => {console.log( err )})
+        let RiskResult = this.anwserList.join("|")
+        
+        let personinfo = JSON.parse(localStorage.getItem('personinfo'))
+
+        let IdNo = personinfo.IdNo
+
+        RiskForOpenCommit({ RiskResult, IdNo }).then(
+            res => {
+                console.log(res)
+                this.$router.push("/extraquestion")
+            }
+        ).catch(
+            err => {
+
+            }
+        )
     },
-    getValue( issGuid, ansGuid ){
+    LERybOpenAccount(){
+        let PwdResult = localStorage.getItem('PwdResult')
+        let RandJnlNo = localStorage.getItem('RandJnlNo')
+        let Random = localStorage.getItem('Random')
+        console.log(PwdResult)
+        console.log(RandJnlNo)
+        console.log(Random)
+        LERybOpenAccount({ PwdResult,RandJnlNo,Random}).then(
+            res => {
+                console.log(res)
+            }
+        ).catch(err=>{console.log(err)})
+    },
+    getValue(issGuid, ansGuid) {
+        console.log(issGuid,ansGuid)
       let index = this.cacheArr.indexOf(issGuid)
-      if(index > -1){
-        this.anwserList.splice(index,1,issGuid + '|' + ansGuid)
+      if (index > -1) {
+        this.anwserList.splice(index, 1, issGuid + "|" + ansGuid)
         return false
       }
       this.cacheArr.push(issGuid)
-      this.anwserList.push(issGuid + '|' + ansGuid)
+      this.anwserList.push(ansGuid)
     }
   },
   mounted() {
-    this.RiskQuestionQuery()
+    this.RiskQuestionQry()
   },
   components: {
     MyHeader,
@@ -93,24 +123,24 @@ export default {
 };
 </script>
 <style scoped>
-.assessreport{
-    background:white;
+.assessreport {
+  background: white;
 }
-.assessreport dl{
-    padding:0 0.14rem;
-    box-sizing: border-box;
+.assessreport dl {
+  padding: 0 0.14rem;
+  box-sizing: border-box;
 }
-.assessreport dl dt{
-    font-size: 0.17rem;
-    color:#3e3e3e;
-    margin: 0.2rem 0;
-    font-weight: bold;
+.assessreport dl dt {
+  font-size: 0.17rem;
+  color: #3e3e3e;
+  margin: 0.2rem 0;
+  font-weight: bold;
 }
-.assessreport .mui-radio label{
-    color:#242424;
+.assessreport .mui-radio label {
+  color: #242424;
 }
 .service {
-    margin-top:0.3rem;
+  margin-top: 0.3rem;
 }
 .btncontainer {
   padding: 0 0.16rem;

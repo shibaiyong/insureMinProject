@@ -90,7 +90,7 @@ export default {
   },
   computed: {},
   mounted() {
-    this.showStatusTip();
+    //this.showStatusTip();
   },
   components: {
     MyHeader,

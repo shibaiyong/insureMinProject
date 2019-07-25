@@ -24,7 +24,7 @@ import MyHeader from "@/components/base/MyHeader.vue"
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
 import { RiskQuestionQry, RiskResultCommit, LERybOpenAccount, RiskForOpenCommit } from "@/requestDataInterface"
-
+import { sortArr } from "@/assets/utils"
 export default {
   name: "AssessReport",
   props: {},
@@ -47,16 +47,13 @@ export default {
   created() {},
   methods: {
     gotoSite() {
-      
       this.RiskResultCommit()
     },
     RiskQuestionQry() {
       RiskQuestionQry()
         .then(res => {
-          console.log(res)
           if (res.code == 2000 && res.result.QuestionsList) {
             this.QuestionList = res.result.QuestionsList
-            console.log(this.QuestionList)
           }
         })
         .catch(err => {
@@ -64,17 +61,17 @@ export default {
         });
     },
     RiskResultCommit(){
-
-        let RiskResult = this.anwserList.join("|")
-        
         let personinfo = JSON.parse(localStorage.getItem('personinfo'))
 
         let IdNo = personinfo.IdNo
 
+        let sortAr = sortArr(this.anwserList, 'issGuid')
+
+        let RiskResult = sortAr.map((item)=>item.ansGuid).join("|")
+
         RiskForOpenCommit({ RiskResult, IdNo }).then(
             res => {
-                console.log(res)
-                this.$router.push("/extraquestion")
+              this.$router.push("/extraquestion")
             }
         ).catch(
             err => {
@@ -86,24 +83,21 @@ export default {
         let PwdResult = localStorage.getItem('PwdResult')
         let RandJnlNo = localStorage.getItem('RandJnlNo')
         let Random = localStorage.getItem('Random')
-        console.log(PwdResult)
-        console.log(RandJnlNo)
-        console.log(Random)
         LERybOpenAccount({ PwdResult,RandJnlNo,Random}).then(
             res => {
-                console.log(res)
+              console.log(res)
             }
         ).catch(err=>{console.log(err)})
     },
     getValue(issGuid, ansGuid) {
-        console.log(issGuid,ansGuid)
+        console.log(issGuid, ansGuid)
       let index = this.cacheArr.indexOf(issGuid)
       if (index > -1) {
-        this.anwserList.splice(index, 1, issGuid + "|" + ansGuid)
+        this.anwserList.splice(index, 1, { issGuid, ansGuid })
         return false
       }
       this.cacheArr.push(issGuid)
-      this.anwserList.push(ansGuid)
+      this.anwserList.push({ issGuid, ansGuid })
     }
   },
   mounted() {

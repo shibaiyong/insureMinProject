@@ -18,6 +18,7 @@
     <div class="service">
       <Service />
     </div>
+    <MyTip :tipvisible="tipvisible" :configMessage="configMessage" :tipStyle="tipStyle"/>
   </div>
 </template>
 
@@ -25,6 +26,7 @@
 import MyHeader from "@/components/base/MyHeader.vue"
 import Service from "@/components/base/Service.vue"
 import MyButton from "@/components/base/MyButton"
+import MyTip from "@/components/base/MyTip"
 import { RiskQuestionQuery } from "@/requestDataInterface"
 
 export default {
@@ -43,7 +45,26 @@ export default {
       QueGuid:'',
       QuestionList:[],
       anwserList:[],
-      PerInfoAnswer:''
+      PerInfoAnswer:'',
+      tipvisible:false,
+      configMessage:{
+        imgsrc:'/static/img/assess@2x.png',
+        title:'购买成功',
+        subtitle:'10,000.00',
+        des:'预计5月10日开始计息，5月11日首笔收益到账',
+        btnText:'查看账单',
+        btnStyle:{
+          height: "0.4rem",
+          background: "#3a65ff",
+          borderRadius: "0.19rem",
+          color: "white",
+          width: "2rem"
+        },
+        callback:null
+      },
+      tipStyle:{
+        width:"1.83rem"
+      }
     }
   },
   created() {},
@@ -66,6 +87,21 @@ export default {
         }
       }).catch(err => {console.log( err )})
     },
+    showStatusTip(){
+      let that = this
+      this.tipvisible = true
+      this.configMessage = {
+        imgsrc:'/static/img/assess@2x.png',
+        header:'评估完成',
+        title:'您的测评结果：稳健型',
+        // subtitle:'',
+        des:'适合购买产品等级为中风险及以下产品',
+        btnText:'设置交易密码',
+        callback:function(){
+          that.tipvisible = false
+        }
+      }
+    },
     getValue( issGuid, ansGuid ){
       let index = this.cacheArr.indexOf(issGuid)
       if(index > -1){
@@ -78,11 +114,13 @@ export default {
   },
   mounted() {
     this.RiskQuestionQuery()
+    this.showStatusTip()
   },
   components: {
     MyHeader,
     Service,
-    MyButton
+    MyButton,
+    MyTip
   },
   watch: {
     selected(val) {

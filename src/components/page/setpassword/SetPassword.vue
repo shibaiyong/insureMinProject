@@ -287,7 +287,9 @@ export default {
     MyHeader,
     MyButton
   },
-  beforeDestroy() {}
+  beforeDestroy() {
+    clearInterval(changeNumberInterval)
+  }
 };
 </script>
 <style scoped>

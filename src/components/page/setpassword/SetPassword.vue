@@ -265,10 +265,10 @@ export default {
       this.setIntervalCache = setInterval(() => {
         this.numberStart = this.numberStart + step
         if (this.numberStart >= this.numberEnd && span >= 0) {
-          clearInterval(changeNumberInterval)
+          clearInterval(this.setIntervalCache)
           this.numberStart = this.numberEnd
         } else if (this.numberStart <= this.numberEnd && span < 0) {
-          clearInterval(changeNumberInterval)
+          clearInterval(this.setIntervalCache)
           this.numberStart = this.numberEnd
           this.ifFetchCode = true
         }
@@ -288,7 +288,7 @@ export default {
     MyButton
   },
   beforeDestroy() {
-    clearInterval(changeNumberInterval)
+    clearInterval(this.setIntervalCache)
   }
 };
 </script>

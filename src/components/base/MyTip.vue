@@ -1,9 +1,9 @@
 <template>
-  <div class="mytip" v-show="tipvisible">
+  <div class="mytip" v-show="configMessage.tipvisible">
     <div class="header">
-      <i class="mui-icon mui-icon-arrowleft" />
+      <i class="mui-icon mui-icon-arrowleft" :style="{visibility:'hidden'}"/>
       <span>{{configMessage.header}}</span>
-      <span class="close">关闭</span>
+      <span class="close" @click="configMessage.tipvisible=false">关闭</span>
     </div>
     <img :src="configMessage.imgsrc" :style="tipStyle" />
     <div class="tipcontent">
@@ -35,10 +35,7 @@ import MyHeader from "@/components/base/MyHeader";
 export default {
   name: "MyTip",
   props: {
-    tipvisible: {
-      default: true,
-      type: Boolean
-    },
+    
     configMessage: {
       default: function() {
         return {}
@@ -56,7 +53,10 @@ export default {
   },
   data() {
     return {
-      value: ""
+      value: "",
+      arrowleft:{
+        visibility:'hidden'
+      }
     };
   },
   created() {},
@@ -68,7 +68,8 @@ export default {
       this.configMessage.callback();
     }
   },
-  computed: {},
+  computed: {
+  },
   mounted() {},
   components: {
     MyButton,

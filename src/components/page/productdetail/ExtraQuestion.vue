@@ -18,7 +18,7 @@
     <div class="service">
       <Service />
     </div>
-    <MyTip :tipvisible="tipvisible" :configMessage="configMessage" :tipStyle="tipStyle"/>
+    <MyTip :tipvisible="configMessage.tipvisible" :configMessage="configMessage" :tipStyle="tipStyle"/>
   </div>
 </template>
 
@@ -33,6 +33,7 @@ export default {
   name: "AssessReport",
   props: {},
   data() {
+    let that = this
     return {
       btnStyle: {
         width: "100%",
@@ -46,13 +47,14 @@ export default {
       QuestionList:[],
       anwserList:[],
       PerInfoAnswer:'',
-      tipvisible:false,
+      
       configMessage:{
+        tipvisible:false,
         imgsrc:'/static/img/assess@2x.png',
-        title:'购买成功',
-        subtitle:'10,000.00',
-        des:'预计5月10日开始计息，5月11日首笔收益到账',
-        btnText:'查看账单',
+        header:'评估完成',
+        title:'您的测评结果：稳健型',
+        des:'适合购买产品等级为中风险及以下产品',
+        btnText:'设置交易密码',
         btnStyle:{
           height: "0.4rem",
           background: "#3a65ff",
@@ -60,7 +62,10 @@ export default {
           color: "white",
           width: "2rem"
         },
-        callback:null
+        callback:function(){
+          
+          that.$router.push({name:'SetPassword'})
+        }
       },
       tipStyle:{
         width:"1.83rem"
@@ -88,19 +93,7 @@ export default {
       }).catch(err => {console.log( err )})
     },
     showStatusTip(){
-      let that = this
-      this.tipvisible = true
-      this.configMessage = {
-        imgsrc:'/static/img/assess@2x.png',
-        header:'评估完成',
-        title:'您的测评结果：稳健型',
-        // subtitle:'',
-        des:'适合购买产品等级为中风险及以下产品',
-        btnText:'设置交易密码',
-        callback:function(){
-          that.tipvisible = false
-        }
-      }
+      this.configMessage.tipvisible = true
     },
     getValue( issGuid, ansGuid ){
       let index = this.cacheArr.indexOf(issGuid)

@@ -16,7 +16,7 @@
     <div class="service">
       <Service />
     </div>
-    <MyTip :tipvisible="tipvisible" :configMessage="configMessage"/>
+    <MyTip :configMessage="configMessage"/>
   </div>
 </template>
 
@@ -44,8 +44,9 @@ export default {
       toastinstance: {
         toast: null
       },
-      tipvisible:false,
+      
       configMessage:{
+        tipvisible:true,
         imgsrc:'/static/img/right@2x.png',
         title:'购买成功',
         subtitle:'10,000.00',

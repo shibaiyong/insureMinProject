@@ -112,12 +112,12 @@ export default {
       this.$router.push({ name: url, params: { userid: "123" } });
     },
     queryAnnualRate(){
-      ProdInfoQuery().then(res => {
+      // ProdInfoQuery().then(res => {
 
-        console.log(res)
+      //   console.log(res)
         
-      }
-      ).catch(err => console.log(err))
+      // }
+      // ).catch(err => console.log(err))
     }
   },
   computed: {

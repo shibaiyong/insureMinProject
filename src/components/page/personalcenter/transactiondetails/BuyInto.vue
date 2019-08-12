@@ -65,7 +65,7 @@ export default {
   created() {},
   methods: {
       changeStatus() {
-      let status = "2"
+      let status = "1"
       if (status == "1") {
         this.processing = true
       } else if (status == "2") {

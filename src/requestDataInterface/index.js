@@ -7,10 +7,9 @@ import qs from 'qs'
  * **/
 
 //产品信息查询
-//调用的太频繁，调试时先注释掉
-// export const ProdInfoQuery = params => {
-//     return axiosInstance.post("/product/LERybProdInfoQuery").then(res => res.data)
-// }
+export const ProdInfoQuery = params => {
+    return axiosInstance.post("/product/LERybProdInfoQuery").then(res => res.data)
+}
 
 //产品历史行情查询
 export const ProdInfoHisQuery = params => {

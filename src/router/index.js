@@ -47,7 +47,7 @@ const Help = r => require.ensure([], () => r(require('@/components/page/help/Hel
 
 
 const instance = new Router({
-  mode: 'history',
+  mode: 'hash',
   routes: [
     { path: '/', redirect: '/home' },
 

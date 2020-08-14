@@ -107,6 +107,11 @@ export const LERybOpenAccount = params => {
     return axiosInstance.post("/accountOpen/LERybOpenAccount",qs.stringify( params )).then(res => res.data)
 }
 
+//
+export const getList = params => {
+    return axiosInstance.get("/static/json/more.json",{params}).then(res => res.data)
+}
+
 
 
 

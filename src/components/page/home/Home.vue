@@ -1,5 +1,6 @@
 <template>
-  <div class="home">
+<div class="outer">
+  <div class="home inner" v-dropload="options">
     <MyHeader></MyHeader>
     <div class="banner">
       <swiper :options="horizontalSwiperOption" ref="horizontalSwiper" @someSwiperEvent="callback">
@@ -54,18 +55,28 @@
     <div class="service">
         <Service/>
     </div>
-    <MyFooter></MyFooter>
+    <!-- <MyFooter></MyFooter> -->
+    <table>
+      <tr v-for="item in datas" :key="item.id">
+        <td>{{item.link}}</td>
+        <td>{{item.pic}}</td>
+        <td>{{item.date}}</td>
+        <td>{{item.title}}</td>
+      </tr>
+    </table>
   </div>
+  </div>
+  
 </template>
 
 <script>
-import Service from "@/components/base/Service.vue"
-import MyFooter from "@/components/base/MyFooter"
-import MyButton from "@/components/base/MyButton"
-import "swiper/dist/css/swiper.css"
-import MyHeader from "@/components/base/MyHeader"
-import { swiper, swiperSlide } from "vue-awesome-swiper"
-import { ProdInfoQuery } from "@/requestDataInterface"
+import Service from "@/components/base/Service.vue";
+import MyFooter from "@/components/base/MyFooter";
+import MyButton from "@/components/base/MyButton";
+import "swiper/dist/css/swiper.css";
+import MyHeader from "@/components/base/MyHeader";
+import { swiper, swiperSlide } from "vue-awesome-swiper";
+import { ProdInfoQuery, getList } from "@/requestDataInterface";
 
 export default {
   props: {},
@@ -90,41 +101,80 @@ export default {
         speed: 300,
         height: 40
       },
-      advertising:[
-        { id: 1, img: '/static/img/lowthreshold@2x.png', slogan: '低门槛', explain:'1分钱即可购买'},
-        { id: 2, img: '/static/img/lowrisk@2x.png', slogan: '低风险', explain:'资金随存随取'},
-        { id: 3, img: '/static/img/morestable@2x.png', slogan: '更稳定', explain:'民生银行代销'},
-        { id: 4, img: '/static/img/moresafe@2x.png', slogan: '更安全', explain:'资金直进银行'}
+      advertising: [
+        {
+          id: 1,
+          img: "/static/img/lowthreshold@2x.png",
+          slogan: "低门槛",
+          explain: "1分钱即可购买"
+        },
+        {
+          id: 2,
+          img: "/static/img/lowrisk@2x.png",
+          slogan: "低风险",
+          explain: "资金随存随取"
+        },
+        {
+          id: 3,
+          img: "/static/img/morestable@2x.png",
+          slogan: "更稳定",
+          explain: "民生银行代销"
+        },
+        {
+          id: 4,
+          img: "/static/img/moresafe@2x.png",
+          slogan: "更安全",
+          explain: "资金直进银行"
+        }
       ],
-      annualrate:'-'
-    }
+      annualrate: "-",
+      datas: [],
+      options: {
+        loadDownFn:true,
+        loadUpFn:true
+      }
+    };
   },
   created() {},
   methods: {
-    callback() {},
+    callback(){
+
+    },
+    loadUpFn(me) {
+      getList().then(res => {
+        setTimeout(()=>{
+          this.datas = res.lists;
+          me.resetload();
+        },600)
+      })
+    },
+    loadDownFn(me) {
+      getList().then(res => {
+        setTimeout(()=>{
+          this.datas = this.datas.concat(res.lists);
+          me.resetload();
+        },600)
+      })
+    },
     destroySwiper() {
       let instance = this.$refs.horizontalSwiper.swiper;
       if (instance.slides.length == 1) {
         instance.destroy();
       }
     },
-    gotoPage( url ){
+    gotoPage(url) {
       this.$router.push({ name: url, params: { userid: "123" } });
     },
-    queryAnnualRate(){
+    queryAnnualRate() {
       // ProdInfoQuery().then(res => {
-
       //   console.log(res)
-        
       // }
       // ).catch(err => console.log(err))
     }
   },
-  computed: {
-
-  },
+  computed: {},
   mounted() {
-   this.queryAnnualRate()
+    this.queryAnnualRate();
   },
   components: {
     MyHeader,
@@ -134,9 +184,7 @@ export default {
     Service,
     MyFooter
   },
-  beforeDestroy() {
-
-  }
+  beforeDestroy() {}
 };
 </script>
 <style scoped>
@@ -224,43 +272,42 @@ export default {
   margin-bottom: 0.1rem;
 }
 
-.advertising{
-  background:white;
-  display:flex;
+.advertising {
+  background: white;
+  display: flex;
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
-  padding:0.3rem 0;
+  padding: 0.3rem 0;
 }
-.advertising img{
-  width:0.27rem;
+.advertising img {
+  width: 0.27rem;
 }
-.advertising .advertising_item{
-  font-size:12px;
-  width:40%;
+.advertising .advertising_item {
+  font-size: 12px;
+  width: 40%;
 }
-.advertising .advertising_item:nth-child(n+3){
-  margin-top:0.32rem;
+.advertising .advertising_item:nth-child(n + 3) {
+  margin-top: 0.32rem;
 }
 
-.advertising dl{
-  display:inline-block;
+.advertising dl {
+  display: inline-block;
   vertical-align: middle;
-  margin-left:0.08rem;
+  margin-left: 0.08rem;
 }
 
-.advertising dl dt{
-  font-size:0.14rem;
-  color:black;
+.advertising dl dt {
+  font-size: 0.14rem;
+  color: black;
   margin-bottom: 0.08rem;
 }
-.advertising dl dd{
-  font-size:0.12rem;
-  color:rgb(73,73,73)
+.advertising dl dd {
+  font-size: 0.12rem;
+  color: rgb(73, 73, 73);
 }
 
-.service{
+.service {
   margin-bottom: 0.7rem;
 }
-
 </style>

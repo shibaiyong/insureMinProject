@@ -1,4 +1,4 @@
-import { filters, directives } from "./index"
+import { filters,directives } from "./index.js"
 
 export default{  
   install (Vue, options) {

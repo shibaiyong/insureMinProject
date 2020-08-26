@@ -8,7 +8,10 @@ import store from './vuex/store'
 import '@/assets/utils/ajustScreen.js'
 import '@/assets/css/common.css'
 import '@/assets/css/dropload.css'
-import Api from '@/assets/utils/api.js'
+// import Api from '@/assets/utils/api.js'
+import Api from 'byshiui'
+Vue.use(Api)
+console.log(Api)
 //按需引入 借助 babel-plugin-component
 import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, Loadmore, TabContainer, TabContainerItem, Field, Picker, Popup, Actionsheet } from 'mint-ui'
 //以下是mint-ui完整引入
@@ -30,7 +33,7 @@ Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Field.name, Field)
 
-Vue.use(Api)
+
 
 Vue.config.productionTip = false
 /* eslint-disable no-new */

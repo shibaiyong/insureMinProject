@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="goodsSummary">
+    <!-- <div class="goodsSummary">
       <h3>如意宝</h3>
       <ul>
         <li>
@@ -54,7 +54,7 @@
     </div>
     <div class="service">
         <Service/>
-    </div>
+    </div> -->
     <!-- <MyFooter></MyFooter> -->
     <table>
       <tr v-for="item in datas" :key="item.id">
@@ -142,18 +142,14 @@ export default {
     },
     loadUpFn(me) {
       getList().then(res => {
-        setTimeout(()=>{
           this.datas = res.lists;
           me.resetload();
-        },600)
       })
     },
     loadDownFn(me) {
       getList().then(res => {
-        setTimeout(()=>{
           this.datas = this.datas.concat(res.lists);
           me.resetload();
-        },600)
       })
     },
     destroySwiper() {

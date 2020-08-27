@@ -1,6 +1,6 @@
 <template>
 <div class="outer">
-  <div class="home inner">
+  <div class="home inner" v-dropload="options">
     <MyHeader></MyHeader>
     <div class="banner">
       <swiper :options="horizontalSwiperOption" ref="horizontalSwiper" @someSwiperEvent="callback">
@@ -56,6 +56,9 @@
         <Service/>
     </div> -->
     <!-- <MyFooter></MyFooter> -->
+
+    <by-checkbox>hahahahah</by-checkbox>
+
     <table>
       <tr v-for="item in datas" :key="item.id">
         <td>{{item.link}}</td>
@@ -64,7 +67,7 @@
         <td>{{item.title}}</td>
       </tr>
     </table>
-    <by-checkbox>hahahahah</by-checkbox>
+    
   </div>
   </div>
   

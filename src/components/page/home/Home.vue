@@ -1,6 +1,6 @@
 <template>
 <div class="outer">
-  <div class="home inner" v-dropload="options">
+  <div class="home inner">
     <MyHeader></MyHeader>
     <div class="banner">
       <swiper :options="horizontalSwiperOption" ref="horizontalSwiper" @someSwiperEvent="callback">
@@ -64,6 +64,7 @@
         <td>{{item.title}}</td>
       </tr>
     </table>
+    <by-checkbox>hahahahah</by-checkbox>
   </div>
   </div>
   

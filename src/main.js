@@ -5,13 +5,12 @@ import App from './App'
 import router from './router'
 import store from './vuex/store'
 // import 'mint-ui/lib/style.css'
+
+import 'byshiui/dist/lib/css.css'
 import '@/assets/utils/ajustScreen.js'
 import '@/assets/css/common.css'
-import '@/assets/css/dropload.css'
-// import Api from '@/assets/utils/api.js'
-import Api from 'byshiui'
-Vue.use(Api)
-console.log(Api)
+import byshiui from 'byshiui'
+
 //按需引入 借助 babel-plugin-component
 import { Button, DatetimePicker, Cell, Header, Navbar, TabItem, Loadmore, TabContainer, TabContainerItem, Field, Picker, Popup, Actionsheet } from 'mint-ui'
 //以下是mint-ui完整引入
@@ -32,6 +31,9 @@ Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Field.name, Field)
+
+
+Vue.use(byshiui)
 
 
 

@@ -1,6 +1,6 @@
 <template>
 <div class="outer">
-  <div class="home inner" v-dropload="options">
+  <div class="home inner">
     <MyHeader></MyHeader>
     <div class="banner">
       <swiper :options="horizontalSwiperOption" ref="horizontalSwiper" @someSwiperEvent="callback">
@@ -58,6 +58,7 @@
     <!-- <MyFooter></MyFooter> -->
 
     <by-checkbox>hahahahah</by-checkbox>
+    <by-gesturelock :opts="this.opts"/>
 
     <table>
       <tr v-for="item in datas" :key="item.id">
@@ -85,6 +86,28 @@ import { ProdInfoQuery, getList } from "@/requestDataInterface";
 export default {
   props: {},
   data() {
+    this.opts={
+      width: 300,
+      height: 300,
+      canvasLockType: 3,
+      selectNum: 4,
+      inputCallback: function(code, vm) {
+        alert("请再次输入");
+      },
+      comfirmCallback: function(code, vm) {
+        if (code == 1) {
+          alert("设置成功");
+        } else {
+          alert("两次密码不一致");
+        }
+      },
+      unlockSucc: function(vm) {
+        alert("解锁成功");
+      },
+      unlockFail: function(vm) {
+        alert("解锁失败");
+      }
+    };
     return {
       horizontalSwiperOption: {
         autoplay: {
@@ -174,7 +197,18 @@ export default {
   },
   computed: {},
   mounted() {
+    this.$showdialog({
+          title: "我是标题",
+          cancel: "",
+          confirm: "确定",
+          content: "用户名和密码不能为空",
+          confirmCallback: (vm) => {
+            console.log('haha')
+            vm.visible = false
+          }
+        },true)
     this.queryAnnualRate();
+    
   },
   components: {
     MyHeader,
